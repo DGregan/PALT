@@ -6,8 +6,9 @@ app = Flask(__name__)
 
 
 @app.route('/')
+@app.route('/index')
 def index():
-    return 'Index Page!'
+    return render_template("index.html")
 
 
 @app.route('/about')
@@ -22,6 +23,15 @@ def about():
 @app.route('/interfaces/<device>/')
 def interfaces(device=None):
     return render_template("interfaces.html", device=device)
+
+@app.route('/interfaces/<device>/analysishub')
+def analysishub(device=None):
+    return render_template("analysishub.html", device=device)
+
+
+@app.route('/help')
+def help():
+    return render_template("help.html")
 
 
 if __name__ == '__main__':
