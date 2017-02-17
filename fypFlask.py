@@ -22,7 +22,9 @@ def about():
 @app.route('/interfaces')
 @app.route('/interfaces/<device>/')
 def interfaces(device=None):
-    return render_template("interfaces.html", device=device)
+    packet_handler = PacketHandler()
+    devices = packet_handler.get_all_devices()
+    return render_template("interfaces.html", device=devices)
 
 @app.route('/interfaces/<device>/analysishub')
 def analysishub(device=None):

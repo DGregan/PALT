@@ -54,8 +54,9 @@ class PacketHandler:
             print("\nChecking for operable devices...")
             # TODO Tooltip over 'operable'
             # TODO SPINNER HERE
-            active_devices = get_active_devices()
-            return active_devices
+            get_active_devices()
+            #active_devices = get_active_devices()
+            #return active_devices
 
     def select_active_device(self):
         # TODO - Handle through webpage?
@@ -85,10 +86,22 @@ class PacketHandler:
         :return:
         test
         '''
+        def ethernet_addr():
+            pass
 
+        def ip_addr():
+            pass
 
+        def tcp_segment():
+            pass
 
+        def udp_segment():
+            pass
 
+        def http_segment():
+            pass
 
+        def snmp_segment():
+            pass
 
 PacketHandler().get_all_devices()

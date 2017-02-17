@@ -5,6 +5,30 @@
     <title>Interfaces - Select which interface to analyze</title>
 </head>
 <body>
+
+
+<!--
+    STRUCTURE
+        - SEARCH FOR INTERFACES
+            - BUTTON TO SEARCH FOR DEVICES 'BEGIN SEARCH'
+                - DISPLAY ALL FOUND DEVICES
+                - DISPLAY DEVICES THAT CAN CAPTURE DATA
+
+            - FILTER OPTIONS
+                - DISPLAY PRE-FILTER OPTIONS
+                    - IP, TCP, UDP, HTTP,
+                    - HAVE OWN FILTER LIST?
+
+            - BUTTON
+                - START ANALYSIS
+                    - SHOULD USE SELECTED INTERFACE / FILTERS AND INITIATED PACKET HANDLER
+
+            - HELP SECTION
+                - INFO
+                    - WHAT THE SEARCH DOES
+                    - WHAT WAS RETURNED
+-->
+
 {% if device %}
         <h1>Selected Device: {{ device }}</h1>
 {% else %}
