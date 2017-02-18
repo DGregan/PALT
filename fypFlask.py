@@ -1,7 +1,5 @@
-from flask import Flask
-from flask import render_template
-from flask import Markup
-from PacketHandler import PacketHandler
+from flask import Flask, render_template, Markup
+from PacketHandler import PacketHandler, ParsePacket
 app = Flask(__name__)
 
 
@@ -25,6 +23,7 @@ def interfaces(device=None):
     packet_handler = PacketHandler()
     devices = packet_handler.get_all_devices()
     return render_template("interfaces.html", device=devices)
+
 
 @app.route('/interfaces/<device>/analysishub')
 def analysishub(device=None):

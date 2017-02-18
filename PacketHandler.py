@@ -1,6 +1,59 @@
-from pcapy import *
-from impacket import *
+import pcapy
+from pcapy import findalldevs, open_offline, open_live, lookupdev
+import impacket
+from impacket.ImpactPacket import PacketBuffer, ProtocolLayer,ProtocolPacket, TCP, UDP, Ethernet, EthernetTag, ARP
+from impacket.ImpactDecoder import EthDecoder, LinuxSLLDecoder, IP6Decoder, ICMPDecoder, IPDecoder, TCPDecoder, UDPDecoder, ARPDecoder
+import ast # ast.literal_eval(_) turns unicode to string - removes unicode from strings
+from threading import Thread
+
 import types
+'''
+    TODO
+        - Find out how ImpactPacket <-interlink-> ImpactDecoder, to retrieve specific data
+
+'''
+
+
+class DecoderThread(Thread):
+    def __init__(self, packet_capture):
+        current_datalink = packet_capture.datalink()
+        # TODO - check against IEEE802, ARCNET
+
+        if current_datalink == None:
+            raise Exception("Datalink not found")
+        elif pcapy.DLT_EN10MB == current_datalink:
+            # Checks to see if datalink is Ethernet(10Mb, 100Mb, 1000Mb and upwards)
+            print("Datalink: Ethernet")
+            self.decode_packets = EthDecoder()  # TODO - MIGHT HAVE TO PASS INTO IPDECODER?
+
+            # TODO - HERE
+            self.decode_ip_packets = EthDecoder().ip_decoder
+            self.decode_tcp_packets = TCPDecoder()
+        elif pcapy.DLT_LINUX_SLL == current_datalink:
+            # Checks to see if datalink is a Linux "cooked" capture encapsulation
+            print("Datalink: Linux 'Cooked'")
+            self.decode_packets = LinuxSLLDecoder()
+        else:
+            raise Exception("Data link not supported:", current_datalink)
+        self.pcap = packet_capture
+        Thread.__init__(self)
+
+    def run(self):
+        print("Starting pcap loop")
+        self.pcap.loop(0, self.packetHandler)
+
+    def packetHandler(self, hdr, data):
+        print("At Packet Handler")
+        print("ip_decoder", self.decode_ip_packets.decode(data))
+        print("\nEther Type: ",self.decode_packets.decode(data).get_ether_type())
+        print("\nHeader Size: ", self.decode_packets.decode(data).get_header_size())
+        # TODO - BE ABLE TO GET SPECIFIC DATA
+        #print("\nIP Header Size:", self.decode_ip_packets.decode(data).get_header_size())
+        #print("\nIP Header Length", self.decode_ip_packets.decode(data).get_ip_hl())
+        print("\nIP Destination", self.decode_ip_packets.decode(data).get_ip_dst())
+        print("\nIP Source", self.decode_ip_packets.decode(data).get_ip_src())
+
+
 
 
 class PacketHandler:
@@ -10,7 +63,6 @@ class PacketHandler:
               "max_bytes": 65536,
               "capture_timeout": 0
             }
-
 
     def get_all_devices(self):
         '''
@@ -29,15 +81,20 @@ class PacketHandler:
                          ]
             active_devs = lookupdev()
 
+            if len(active_devs) <0:
+                # Check if any active devices
+                print("No Active Devices Found")
+
             print("\nOperable Interface Devices:")
             if isinstance(active_devs, str) == 1:
                 print(str(active_devs))
-
+            elif isinstance(active_devs, unicode) == 1:
+                active_devs = str(active_devs)  # Convert to string to work with open_live
+                print(active_devs)
             elif isinstance(active_devs, list) or isinstance(active_devs, tuple):
-                print("Checking if active devices =List/list")
+                #print("Checking if active devices =List/list")
                 print("LIST: ", isinstance(active_devs, list))
                 print("TUPLE: ", isinstance(active_devs, tuple))
-                print()
                 if len(active_devs) > 1:
                     for devs in active_devs:
                         print(devs)
@@ -52,11 +109,8 @@ class PacketHandler:
             for d in all_devices:
                 print(d)
             print("\nChecking for operable devices...")
-            # TODO Tooltip over 'operable'
-            # TODO SPINNER HERE
-            get_active_devices()
-            #active_devices = get_active_devices()
-            #return active_devices
+            active_devices = get_active_devices()
+            return active_devices
 
     def select_active_device(self):
         # TODO - Handle through webpage?
@@ -74,34 +128,108 @@ class PacketHandler:
             print(filter_options)
             filtered_packet_capture = set_packet_capture_filter(packet_capture, filter_options)
         # Continuous Packet capturing TODO - FIX THIS
+        #display_device_info(selected_device, packet_capture)
+
+
         while(True):
             (header, packet) = packet_capture.next()
-            self.parse_packet(packet)
 
-    def parse_packet(self, captured_packet):
+
+class ParsePacket:
+    def __init__(self, selected_device, packet_captured):
+        self.device = selected_device
+        self.captured_packet = packet_captured
+
+    def get_packet_datalink(self, captured_packet):
+        self.packet_datalink = captured_packet.datalink()
+        print("Datalink: ", self.packet_datalink)
+        current_datalink = captured_packets.datalink()
+        # TODO - check against IEEE802, ARCNET - DO DECODER HERE
+
+        # datalink() - int
+        return self.packet_datalink
+
+    def get_packet_network_number(self, captured_packet):
+        self.packet_net_num = captured_packet.getnet()
+        print("\nNetwork Number: ", self.packet_net_num)
+        return self.packet_net_num
+        # getnet() - int32
+
+    def get_packet_network_mask(self, captured_packet):
+        # getmask() - int32
+        self.packet_net_mask = captured_packet.getmask()
+        print("\nNetwork Mask: ", self.packet_net_mask)
+        return self.packet_net_mask
+
+    def get_packet_timestamp(self, captured_packet):
         '''
-        Method to parse through the captured packet and break down into it's components
-        Ex. IP -> TCP -> HTTP
+
         :param captured_packet:
-        :return:
-        test
+        :return: (long, long) - tuple wit 2 elements: # seconds since Epoch,  amount of microseconds
         '''
-        def ethernet_addr():
-            pass
+        # Pkthdr Object Reference
+        self.packet_timestamp = captured_packet.getts()
+        return self.packet_timestamp
 
-        def ip_addr():
-            pass
+    def get_packet_capture_length(self, captured_packet):
+        '''
 
-        def tcp_segment():
-            pass
+        :param captured_packet:
+        :return: # of bytes of the packet that are available from the capture
+        '''
+        self.packet_capture_length = captured_packet.getcaplen()
+        return self.packet_capture_length
 
-        def udp_segment():
-            pass
+    def get_packet_total_length(self, captured_packet):
+        '''
 
-        def http_segment():
-            pass
+        :param captured_packet:
+        :return: Length of packet in bytes
+        which might be more than the number of bytes available from the capture, if the length of
+        the packet is larger than the maximum number of bytes to capture).
+        '''
+        self.packet_total_length = captured_packet.getlen()
+        return self.packet_total_length
 
-        def snmp_segment():
-            pass
+    def get_packet_stats(self, captured_packet):
+        '''
 
-PacketHandler().get_all_devices()
+        :param captured_packet:
+        :return: (int32, int32, int32) = Returns stats on the current capture as tuple (recv, drop, ifdrop)
+        '''
+        self.packet_stats = captured_packet.stats()
+        print("\n--- PACKET STATISTICS ---\n")
+        print("\nRecv: ", self.packet_stats[0])
+        print("\nDrop: ", self.packet_stats[1])
+        print("\nIfDrop: ", self.packet_stats[2])
+        return self.packet_stats
+
+    def ethernet_addr(self):
+        pass
+
+    def ip_addr(self):
+        pass
+
+    def tcp_segment(self):
+        pass
+
+    def udp_segment(self):
+        pass
+
+    def http_segment(self):
+        pass
+
+    def snmp_segment(self):
+        pass
+
+
+p_handler = PacketHandler()
+selected_active_device = p_handler.get_all_devices()
+#captured_packets = p_handler.start_packet_capture(selected_active_device, "tcp")
+#p_parse = ParsePacket(selected_active_device, captured_packets)
+
+p = open_live(selected_active_device, 1500, 0, 100)
+
+p.datalink()
+print("Running Decoder...")
+DecoderThread(p).start()
