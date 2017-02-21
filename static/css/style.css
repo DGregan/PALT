@@ -53,7 +53,7 @@ body {
     font-size: 100%;
     font-family: "Roboto", sans-serif;
     color: #696969;
-    background-color: #ffffff;
+    background-color: #eeeeee;
 }
 
 h1 {
@@ -147,7 +147,7 @@ header {
     left: 0;
     height: 50px;
     width: 100%;
-    background: #66BB6A;
+    background-color: #424242;
     z-index: 3;
     /* Force Hardware Acceleration in WebKit */
 
@@ -180,6 +180,7 @@ header.is-fixed {
         height: 70px;
     }
 }
+
 
 #cd {
     font-size: 20px;
@@ -249,7 +250,7 @@ ul.a {
     top: 0;
     height: 100%;
     width: 50px;
-    background-color: #66BB6A;
+    background-color: #424242;
 }
 
 #cd-menu-trigger .cd-menu-text {
@@ -357,7 +358,7 @@ ul.a {
 
     z-index: 1;
     width: 260px;
-    background-color: #388E3C;
+    background-color: #424242;
     overflow-y: auto;
     /* Force Hardware Acceleration in WebKit */
 
@@ -392,7 +393,7 @@ ul.a {
 }
 
 #cd-lateral-nav a.current {
-    background-color: #1B5E20;
+    background-color: #212121;
     color: #FFF;
 }
 

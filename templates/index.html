@@ -1,22 +1,69 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
-    <title>PALT - Packet Analyzer Learning Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='css/bootstrap.css') }}" rel="stylesheet"/>
+
+    <link href="{{ url_for('static',filename='css/reset.css') }}" rel="stylesheet"/><!-- Custom CSS -->
+    <link href="{{ url_for('static',filename='css/style.css') }}" rel="stylesheet"/><!-- Custom CSS -->
+    <title>PALT - Packet Analyzing Learning Tool</title>
 </head>
 <body>
+<header>
 
+    <div id="cd">Packet handler</div>
+    <nav id="cd-top-nav">
 
-<!--
+    </nav>
+    <a id="cd-menu-trigger" href="#0"><span class="cd-menu-text"></span><span class="cd-menu-icon"></span></a>
+</header>
+<main class="cd-main-content">
+    <div class="container">
+        <br><br>
+        <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+        <div class="row">
+            <div class="col-6 col-md-4">
+                <h3>Device</h3><br>
 
-    STRUCTURE
-        - INFO
-            - WHAT IS THIS APPLICATION
-            - WHAT DOES IT DO
-            - WHO IS IT INTENDED FOR
+                <form action="" id="form" method="post" name="form" onsubmit="return init();">
+                    <select class='form-control' id="host" name="host"
+                            onchange="this.form.submitBtn.disabled=this.options[this.selectedIndex].value==''"></select>
+                    <input class="btn btn-success" id="submitBtn" name="submitBtn" type="submit" value="Submit"
+                           onclick="this.disabled=true;this.form.submit();this.value='processing...';"
+                           disabled="disabled">
+                </form>
 
-        - LINK TO 'SELECT INTERFACE' PORTAL
--->
+                <br><br><br>
 
+                <div align="center">
+                    {{ web_tables | safe }}
+                </div>
+            </div>
+            <div class="col-6 col-md-4">
+            </div>
+        </div>
+    </div>
+</main> <!-- cd-main-content -->
+
+<nav id="cd-lateral-nav">
+    <ul class="cd-navigation cd-single-item-wrapper">
+        <li><a class="current" href="/">Packet Handler</a></li>
+        <li><a href="about">About</a></li>
+        <li><a href="interfaces">Interfaces</a></li>
+        <li><a href="analysishub">Analysis Hub</a> </li>
+    </ul> <!-- cd-single-item-wrapper -->
+</nav>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
+
+
+
 </html>

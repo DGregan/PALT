@@ -1,5 +1,5 @@
 from flask import Flask, render_template, Markup
-from PacketHandler import PacketHandler, ParsePacket
+from PacketHandler import PacketHandler
 app = Flask(__name__)
 
 
@@ -12,17 +12,17 @@ def index():
 @app.route('/about')
 def about():
     # return 'About Page'
-    my_p = PacketHandler()
-    myvalue =my_p.get_all_devices()
-    return render_template("about.html", daveisalad=myvalue)
+  # my_p = PacketHandler()
+  #  myvalue =my_p.get_all_devices()
+    return render_template("about.html")
 
 
 @app.route('/interfaces')
-@app.route('/interfaces/<device>/')
+#@app.route('/interfaces/<device>/')
 def interfaces(device=None):
     packet_handler = PacketHandler()
-    devices = packet_handler.get_all_devices()
-    return render_template("interfaces.html", device=devices)
+    device = packet_handler.get_all_devices()
+    return render_template("interfaces.html", device=device)
 
 
 @app.route('/interfaces/<device>/analysishub')
