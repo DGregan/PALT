@@ -26,6 +26,7 @@ class DecoderThread(Thread):
             # Checks to see if datalink is Ethernet(10Mb, 100Mb, 1000Mb and upwards)
             print("Datalink: Ethernet")
             self.decode_packets = EthDecoder()  # TODO - GO TO DECODEDCLASS?
+
             self.decode_ip_packets = IP()
             self.decode_tcp_packets = TCP()
         elif pcapy.DLT_LINUX_SLL == current_datalink:
@@ -96,6 +97,7 @@ class PacketHandler:
             print("Devices Found:")
             for d in all_devices:
                 print(d)
+            # TODO - Concat with "\n"
             print("\nChecking for operable devices...")
             return all_devices
 
@@ -581,7 +583,7 @@ class EthernetHeaderParsed:
     def get_packet_data(self):
         return self.ethernet_parsed.get_packet()
 
-
+'''
 p_handler = PacketHandler()
 selected_active_device = p_handler.get_all_devices()
 #captured_packets = p_handler.start_packet_capture(selected_active_device, "tcp")
@@ -592,3 +594,4 @@ p = open_live(selected_active_device, 1500, 0, 100)
 p.datalink()
 print("Running Decoder...")
 DecoderThread(p).start()
+'''

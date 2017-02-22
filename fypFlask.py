@@ -19,10 +19,11 @@ def about():
 
 @app.route('/interfaces')
 #@app.route('/interfaces/<device>/')
-def interfaces(device=None):
+def interfaces(all_devices=None, active_devices=None):
     packet_handler = PacketHandler()
-    device = packet_handler.get_all_devices()
-    return render_template("interfaces.html", device=device)
+    all_devices = packet_handler.get_all_devices()
+    active_devices = packet_handler.get_active_devices()
+    return render_template("interfaces.html", all_devices=all_devices, active_devices=active_devices)
 
 
 @app.route('/interfaces/<device>/analysishub')
