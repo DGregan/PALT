@@ -1,33 +1,19 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='css/bootstrap.css') }}" rel="stylesheet"/>
-
-    <link href="{{ url_for('static',filename='css/reset.css') }}" rel="stylesheet"/><!-- Custom CSS -->
-    <link href="{{ url_for('static',filename='css/style.css') }}" rel="stylesheet"/><!-- Custom CSS -->
+    {% include 'head-static.html' %}
     <title>PALT - Analysis Hub</title>
 </head>
 <body>
 <header>
 
-    <div id="cd">PALT</div>
+    <div id="cd">Analysis Hub - Detailed Analysis of Captured Packets </div>
     <nav id="cd-top-nav">
 
     </nav>
     <a id="cd-menu-trigger" href="#0"><span class="cd-menu-text"></span><span class="cd-menu-icon"></span></a>
 </header>
-<nav id="cd-lateral-nav">
-    <ul class="cd-navigation cd-single-item-wrapper">
-        <li><a class="current" href="/">Packet Handler</a></li>
-        <li><a href="about">About</a></li>
-        <li><a href="interfaces">Interfaces</a></li>
-        <li><a href="analysishub">Analysis Hub</a> </li>
-    </ul> <!-- cd-single-item-wrapper -->
-</nav>
+{% include 'nav-static.html' %}
 <!--
 
     STRUCTURE
@@ -67,9 +53,6 @@
             - DESCRIBE LAYOUT
 
 -->
-<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
-<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% include 'js-static.html' %}
 </body>
 </html>

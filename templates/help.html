@@ -1,33 +1,19 @@
 !DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='css/bootstrap.css') }}" rel="stylesheet"/>
-
-    <link href="{{ url_for('static',filename='css/reset.css') }}" rel="stylesheet"/><!-- Custom CSS -->
-    <link href="{{ url_for('static',filename='css/style.css') }}" rel="stylesheet"/><!-- Custom CSS -->
+    {% include 'head-static.html' %}
     <title>PALT - Help</title>
 </head>
 <body>
 <header>
 
-    <div id="cd">PALTr</div>
+    <div id="cd">Help - Resources</div>
     <nav id="cd-top-nav">
 
     </nav>
     <a id="cd-menu-trigger" href="#0"><span class="cd-menu-text"></span><span class="cd-menu-icon"></span></a>
 </header>
-<nav id="cd-lateral-nav">
-    <ul class="cd-navigation cd-single-item-wrapper">
-        <li><a class="current" href="/">Packet Handler</a></li>
-        <li><a href="about">About</a></li>
-        <li><a href="interfaces">Interfaces</a></li>
-        <li><a href="analysishub">Analysis Hub</a> </li>
-    </ul> <!-- cd-single-item-wrapper -->
-</nav>
+{% include 'nav-static.html' %}
 
 <!--
     STRUCTURE
@@ -40,9 +26,24 @@
 
 
 -->
-<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
-<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+<main class="cd-main-content">
+    <div class="container">
+        <br><br>
+        <div class="row">
+            <div class="col-md-6 col-md-6">
+                 <h3>What is PALT?</h3>
+                <p>PALT or <i>Packet Analysis Learn Tool</i> is a web application </p>
+
+            </div>
+
+            <div class="col-md-6 col-md-6">
+                <h3>Developer</h3>
+            </div>
+        </div>
+
+    </div>
+</main> <!-- cd-main-content -->
+{% include 'js-static.html' %}
 </body>
 </html>

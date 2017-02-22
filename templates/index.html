@@ -2,14 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='css/bootstrap.css') }}" rel="stylesheet"/>
-
-    <link href="{{ url_for('static',filename='css/reset.css') }}" rel="stylesheet"/><!-- Custom CSS -->
-    <link href="{{ url_for('static',filename='css/style.css') }}" rel="stylesheet"/><!-- Custom CSS -->
+    {% include 'head-static.html' %}
     <title>PALT - Packet Analyzing Learning Tool</title>
 </head>
 <body>
@@ -24,28 +17,7 @@
 <main class="cd-main-content">
     <div class="container">
         <br><br>
-        <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-        <div class="row">
-            <div class="col-6 col-md-4">
-                <h3>Device</h3><br>
 
-                <form action="" id="form" method="post" name="form" onsubmit="return init();">
-                    <select class='form-control' id="host" name="host"
-                            onchange="this.form.submitBtn.disabled=this.options[this.selectedIndex].value==''"></select>
-                    <input class="btn btn-success" id="submitBtn" name="submitBtn" type="submit" value="Submit"
-                           onclick="this.disabled=true;this.form.submit();this.value='processing...';"
-                           disabled="disabled">
-                </form>
-
-                <br><br><br>
-
-                <div align="center">
-                    {{ web_tables | safe }}
-                </div>
-            </div>
-            <div class="col-6 col-md-4">
-            </div>
-        </div>
     </div>
 </main> <!-- cd-main-content -->
 
@@ -58,12 +30,18 @@
     </ul> <!-- cd-single-item-wrapper -->
 </nav>
 
-<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
-<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<!--
+    STRUCTURE
+        - Index
+            - Overview
+                - What this web app does
+                - Info returned??
+-->
+
+
+<!-- Initalising js -->
+{% include 'js-static.html' %}
 </body>
-
-
-
 </html>
