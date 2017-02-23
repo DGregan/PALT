@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="en" class="no-js">
-<head>
-    {% include 'head-static.html' %}
-    <title>PALT - Interface Selection</title>
-</head>
+{% include 'head-static.html' %}
+<title>PALT - Interface Select</title>
+
 <body>
 <header>
 
@@ -24,23 +21,21 @@
                 <hr>
                 <h2>All Devices Found:</h2>
                 <hr>
+            </div>
+        </div> <!-- END ROW -->
+        <br>
+
+        <!-- Display all Devices found -->
+        <div class="row">
+            <div class="col-md-6 col-md-6">
                 {% for device in all_devices %}
                     {{  device | safe }}
                     <br><br>
                 {% endfor %}
             </div>
-        </div> <!-- END ROW -->
-        <br><br>
-
-        <!-- Info about all found devices -->
-        <div class="row">
             <div class="col-md-6 col-md-6">
-                <h4>Info</h4>
-                <p>lorem sdfhdjgjndfcgk</p>
-            </div>
-            <div class="col-md-6 col-md-6">
-                <h4>Info 2</h4>
-                <p>dsghjdskfjgbfndlv v </p>
+                <h4>Information about Devices</h4>
+                <p>These devices are all network devices found on the machine.</p>
             </div>
         </div>
 
