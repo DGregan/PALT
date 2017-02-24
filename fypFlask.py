@@ -9,12 +9,9 @@ def start():
     return redirect(url_for('index'))
 
 
-@app.route('/index', methods=['GET'])
+@app.route('/index')
 def index():
-    if request.method == 'GET':
-        return render_template("index.html")
-    else:
-        print ("NOT POST METHOD")
+    return render_template("index.html")
 
 
 @app.route('/about')

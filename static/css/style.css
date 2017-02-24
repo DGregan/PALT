@@ -1,12 +1,39 @@
-@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
-
+/*@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css); */
+@import url('https://fonts.googleapis.com/css?family=Droid+Serif');
 .panel-heading [data-toggle="collapse"]:after {
-    font-family: 'FontAwesome';
+    font-family: 'Droid Serif', serif;
     content: "\f078"; /* "play" icon */
     float: right;
     color: #F58723;
     font-size: 18px;
     line-height: 18px;
+}
+
+.image-bg-fluid-height,
+.image-bg-fixed-height {
+    text-align: center;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.image-bg-fixed-height {
+	background: no-repeat center center scroll;
+    height: 450px;
+}
+
+.image-bg-fluid-height {
+	background:  no-repeat center center scroll;
+    padding: 100px 0;
+}
+
+.img-center {
+    margin: 0 auto;
+    height:200px;
+    width:200px;
+    position: absolute;
 }
 
 .panel-heading [data-toggle="collapse"].collapsed:after {
@@ -51,7 +78,7 @@ body {
 
 body {
     font-size: 100%;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Droid Serif', serif;
     color: #696969;
     background-color: #eeeeee;
 }
@@ -86,14 +113,6 @@ Modules - reusable parts of our design
 
 -------------------------------- */
 
-.cd-img-replace {
-    /* replace text with a background-image */
-
-    display: inline-block;
-    overflow: hidden;
-    text-indent: 100%;
-    white-space: nowrap;
-}
 
 .overflow-hidden {
     overflow: hidden;

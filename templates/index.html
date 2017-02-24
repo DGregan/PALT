@@ -2,29 +2,26 @@
 <title>Index - PALT</title>
 
 <body>
-<header>
+{% include 'nav-static.html' %}
 
-    <div id="cd">Packet handler</div>
-    <nav id="cd-top-nav">
-
-    </nav>
-    <a id="cd-menu-trigger" href="#0"><span class="cd-menu-text"></span><span class="cd-menu-icon"></span></a>
-</header>
 <main class="cd-main-content">
+    <div class="row image-bg-fluid-height">
+            <img class="img-responsive" src="{{ url_for('static', filename='img/index-bg.jpeg') }}" alt="">
+            <div class="col-lg-12 ">
+                <img class="img-center" src="{{ url_for('static', filename='img/logow.png') }}" alt="">
+            </div>
+    </div>
+
     <div class="container">
-        <br><br>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4>Test</h4>
+                <p>esthgjdjnf</p>
+            </div>
+        </div>
 
     </div>
 </main> <!-- cd-main-content -->
-
-<nav id="cd-lateral-nav">
-    <ul class="cd-navigation cd-single-item-wrapper">
-        <li><a class="current" href="/">Packet Handler</a></li>
-        <li><a href="about">About</a></li>
-        <li><a href="interfaces">Interfaces</a></li>
-        <li><a href="analysishub">Analysis Hub</a> </li>
-    </ul> <!-- cd-single-item-wrapper -->
-</nav>
 
 
 
