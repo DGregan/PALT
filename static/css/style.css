@@ -1,4 +1,4 @@
-/*@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css); */
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
 @import url('https://fonts.googleapis.com/css?family=Droid+Serif');
 .panel-heading [data-toggle="collapse"]:after {
     font-family: 'Droid Serif', serif;
@@ -7,6 +7,25 @@
     color: #F58723;
     font-size: 18px;
     line-height: 18px;
+}
+
+hr {
+    height:1px;
+    color: #232321;
+    border:none;
+    background-color: #232321;
+}
+
+.img1 {
+    position: relative;
+    top:0;
+    left:0;
+}
+
+.img2{
+    position: absolute;
+    top:60px;
+    left: 80px;
 }
 
 .image-bg-fluid-height,
@@ -26,7 +45,7 @@
 
 .image-bg-fluid-height {
 	background:  no-repeat center center scroll;
-    padding: 100px 0;
+    width: 100%;
 }
 
 .img-center {
@@ -131,7 +150,7 @@ Main components
     position: relative;
     background-color: white;
     z-index: 2;
-    padding-top: 50px;
+
     /* Force Hardware Acceleration in WebKit */
 
     -webkit-transform: translateZ(0);
@@ -156,7 +175,7 @@ Main components
 
 @media only screen and (min-width: 768px) {
     .cd-main-content {
-        padding-top: 70px;
+        padding-top: 20px;
     }
 }
 
