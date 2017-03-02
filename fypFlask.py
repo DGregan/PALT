@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, request, url_for, make_response
 from PacketHandler import PacketHandler
 app = Flask(__name__)
-app.config.from_object('config.DevConfig')
+app.config.from_object('config.TestConfig')
 
 
 @app.route('/')
@@ -36,7 +36,7 @@ def interfaces(all_devices=None, active_devices=None):
 
 
 @app.route('/analysishub')
-@app.route('/interfaces/<device>/analysishub')
+#@app.route('/interfaces/<device>/analysishub')
 def analysishub(device=None):
     return render_template("analysishub.html", device=device)
 

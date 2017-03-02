@@ -1,12 +1,34 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
-@import url('https://fonts.googleapis.com/css?family=Droid+Serif');
+
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
 .panel-heading [data-toggle="collapse"]:after {
-    font-family: 'Droid Serif', serif;
+    font-family: 'Raleway', sans-serif;
     content: "\f078"; /* "play" icon */
     float: right;
     color: #F58723;
     font-size: 18px;
     line-height: 18px;
+}
+
+thead {
+    background-color: #232321;
+    border-color: #000;
+}
+
+.list-group-item.active {
+    background-color: #232321;
+    border-color: #000;
+
+}
+.list-group-item.active:hover {
+    background-color: #30302e;
+    border-color: #000;
+
+}
+
+.intro-header {
+    padding-top: 10px;
 }
 
 hr {
@@ -97,7 +119,7 @@ body {
 
 body {
     font-size: 100%;
-    font-family: 'Droid Serif', serif;
+    font-family: 'Raleway', sans-serif;
     color: #696969;
     background-color: #eeeeee;
 }
@@ -149,6 +171,7 @@ Main components
     min-height: 100%;
     position: relative;
     background-color: white;
+    padding-top: 30px;
     z-index: 2;
 
     /* Force Hardware Acceleration in WebKit */

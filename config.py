@@ -20,3 +20,8 @@ class DevConfig(Config):
 
 class TestConfig(Config):
     TESTING = True
+    DEBUG = True
+    TRAP_HTTP_EXCEPTIONS = True
+    TEMPLATES_AUTO_RELOAD = True
+    EXPLAIN_TEMPLATE_LOADING = True
+    TRAP_BAD_REQUEST_ERRORS = True

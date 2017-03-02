@@ -583,6 +583,10 @@ class EthernetHeaderParsed:
     def get_packet_data(self):
         return self.ethernet_parsed.get_packet()
 
+
+p = PacketHandler()
+p.get_active_devices()
+
 '''
 p_handler = PacketHandler()
 selected_active_device = p_handler.get_all_devices()
