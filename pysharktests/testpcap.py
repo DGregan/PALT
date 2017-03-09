@@ -58,6 +58,25 @@ def dump_packets(capture):
                 #print('Server:', packet.http.server)
                 print("-------------------------------")
 
+        elif packet.transport_layer == 'UDP':
+            ip = None
+            ip_version = get_ip_version(packet)
+            if ip_version == 4:
+                ip = packet.ip
+            elif ip_version == 6:
+                ip = packet.ipv6
+            print('Packet %d' % i)
+            print("--------PACKET INFO -----------")
+            print('Time', packet.sniff_time)  # "%d %b %Y  %H:%M:%S.%f")
+            print("ip", ip.src)
+
+            print('Packet Number:', packet.number)
+            print('Packet Layers:', packet.layers)
+            print('Highest Layer:', packet.highest_layer)
+            print('Length:', packet.length)
+            print("Captured Length:", packet.captured_length)
+            print("-------------------------------")
+
         i += 1
 
 def main(file):

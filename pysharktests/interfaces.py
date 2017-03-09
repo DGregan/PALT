@@ -52,6 +52,23 @@ def table_packets(capture):
                         }
             print(col_dict)
             #return col_dict
+        elif packet.transport_layer == 'UDP':
+            udp = udp_packets(packet)
+            print(udp)
+            ip = None
+            ip_version = get_ip_version(packet)
+            if ip_version == 4:
+                ip = packet.ip
+            elif ip_version == 6:
+                ip = packet.ipv6
+            time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print("\n--------- COL INFO ---------")
+            col_dict = {'Time': time_stamp, 'Source IP': ip.src, 'Dest. IP': ip.dst, 'Protocol': packet.transport_layer,
+                        'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
+                        'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
+                        }
+            print(col_dict)
+
 
 '''
                 'Flags': {'CWR': packet.tcp.flags.cwr, 'ECN': packet.tcp.flags.ecn, 'URG': packet.tcp.flags.urg,
@@ -60,8 +77,9 @@ def table_packets(capture):
                         },
                 '''
 
+
 def tcp_packets(packet):
-    print("---------TCP INFO ----------")
+    print("\n---------TCP INFO ----------")
     tcp_info = {'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport, 'Sequence Number': packet.tcp.seq,
                 'Acknowledgement': packet.tcp.ack, 'Data Offset': 'N/A', 'Reserve': 'N/A',
 
@@ -71,6 +89,17 @@ def tcp_packets(packet):
                 #, 'Segment Data': packet.tcp.segment_data
                 }  # tcp_dict
     return tcp_info
+
+
+def udp_packets(packet):
+    print("\n---------UDP INFO ----------")
+    udp_info = {'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport, 'Length': packet.udp.length
+        #,'Checksum': packet.udp.checksum, 'Checksum Coverage': packet.udp.checksum_coverage,
+         #       'Checksum Status': packet.udp.checksum_stats
+
+    }
+    return udp_info
+
 
 interfaces = get_interfaces()
 print(type(interfaces))
