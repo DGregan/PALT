@@ -43,31 +43,26 @@
                 <hr>
             </div>
 
-            <div class="col-lg-12" align="center">
+            <div class="col-lg-3"></div>
+
+            <div class="col-lg-6" >
             <p>
-                The active devices on the system are that of blah blahb sdfkfdksf
+                The active interfaces on the system are interfaces where network packet capture is possible.
+                Select an interface below and 'Submit' to begin the packet capture.
             </p>
-
-                 {% for device in active_devices %}
-                   {{  device | safe }}
-                {% endfor %}
-
-                <form action="" id="form" method="post" name="form" onsubmit="return init();">
-                    <select class='form-control' id="host" name="host"
-                            onchange="this.form.submitBtn.disabled=this.options[this.selectedIndex].value==''"></select>
-                    <input class="btn btn-success" id="submitBtn" name="submitBtn" type="submit" value="Submit"
-                           onclick="this.disabled=true;this.form.submit();this.value='processing...';"
-                           disabled="disabled">
-                </form>
-
+            <br>
+                <form action="#" method="POST">
+                    <select title="interface selection" class="form-control">
+                        {% for device in active_devices %}
+                            <option>{{ device | safe }}</option>
+                        {% endfor %}
+                    </select> <!-- select -->
+                <br>
+                 <input type="submit" class="btn btn-success" id="submitButton" role="button" value="Submit">
+                </form><!-- form -->
                 <br><br><br>
-
-                <div align="center">
-                    {{ web_tables | safe }}
-                </div>
             </div>
-            <div class="col-6 col-md-4">
-            </div> <!-- col-6 col-md-4 -->
+            <div class="col-lg-3"></div>
         </div> <!-- row -->
     </div><!-- container -->
 </main> <!-- cd-main-content -->

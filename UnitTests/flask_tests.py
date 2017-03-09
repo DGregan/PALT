@@ -16,9 +16,11 @@ class FlaskTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
+
     def test_server_is_up(self):
         response = urllib2.urlopen(self.baseURL)
         self.assertEqual(response.code, 200)
+
 
     def test_index_page(self):
         response = self.tester.get('/', follow_redirects=True)

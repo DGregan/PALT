@@ -1,80 +1,7 @@
-import pcapy
-from pcapy import findalldevs, open_offline, open_live, lookupdev
-import impacket
-from impacket.ImpactPacket import PacketBuffer, ProtocolLayer,ProtocolPacket, TCP, UDP, Ethernet, EthernetTag, ARP, IP
-from impacket.ImpactDecoder import EthDecoder, LinuxSLLDecoder, IP6Decoder, ICMPDecoder, IPDecoder, TCPDecoder, UDPDecoder, ARPDecoder
-import ast # ast.literal_eval(_) turns unicode to string - removes unicode from strings
-from threading import Thread
-from impacket.ImpactPacket import *
-
+import os
+import subprocess
 import types
-'''
-    TODO
-        - Find out how ImpactPacket <-interlink-> ImpactDecoder, to retrieve specific data
-test
-'''
-
-
-class DecoderThread(Thread):
-    def __init__(self, packet_capture):
-        current_datalink = packet_capture.datalink()
-        # TODO - check against IEEE802, ARCNET
-
-        if current_datalink == None:
-            raise Exception("Datalink not found")
-        elif pcapy.DLT_EN10MB == current_datalink:
-            # Checks to see if datalink is Ethernet(10Mb, 100Mb, 1000Mb and upwards)
-            print("Datalink: Ethernet")
-            self.decode_packets = EthDecoder()  # TODO - GO TO DECODEDCLASS?
-
-            self.decode_ip_packets = IP()
-            self.decode_tcp_packets = TCP()
-        elif pcapy.DLT_LINUX_SLL == current_datalink:
-            # Checks to see if datalink is a Linux "cooked" capture encapsulation
-            print("Datalink: Linux 'Cooked'")
-            self.decode_packets = LinuxSLLDecoder()
-        else:
-            raise Exception("Data link not supported:", current_datalink)
-        self.pcap = packet_capture
-        Thread.__init__(self)
-
-    def run(self):
-        print("Starting pcap loop")
-        self.pcap.loop(0, self.packetHandler)
-
-    def packetHandler(self, hdr, data):
-        # TODO CALL DECODE CLASS?
-        #ParsePacket.get_packet_datalink(data)
-        print("At Packet Handler")
-        print("\nEthdecoder", self.decode_packets.decode(data))
-        print("\nEther Type: ", self.decode_packets.decode(data).get_ether_type())
-        print("\nHeader Size: ", self.decode_packets.decode(data).get_header_size())
-        print("IP SRC", self.decode_ip_packets.get_ip_src())
-        print("\nIP DST", self.decode_ip_packets.get_ip_dst())
-        print("IP Header size", self.decode_ip_packets.get_header_size())
-        print("IP Header lenght", self.decode_ip_packets.get_ip_hl())
-        print("IP DF: %s" % self.decode_ip_packets.get_ip_df())
-        print("IP ID: %s" % self.decode_ip_packets.get_ip_id())
-        print("IP Length: %s" % self.decode_ip_packets.get_ip_len())
-        print("IP MF: %s" % self.decode_ip_packets.get_ip_mf())
-        print("IP off: %s" % self.decode_ip_packets.get_ip_off())
-        print("IP offmask: %s" % self.decode_ip_packets.get_ip_offmask())
-        print("IP p: %s" % self.decode_ip_packets.get_ip_p())
-        print("IP rf: %s" % self.decode_ip_packets.get_ip_rf())
-        print("IP sum: %s" % self.decode_ip_packets.get_ip_sum())
-        print("IP ttl: %s" % self.decode_ip_packets.get_ip_ttl())
-        print("IP version: %s" % self.decode_ip_packets.get_ip_v())
-        print("------------------------------------")
-        print("TCP Source Port: %s" % self.decode_tcp_packets.get_th_sport())
-        print("TCP %s" % self.decode_tcp_packets.get_th_dport())
-        print("TCP Sequence Number %s" % self.decode_tcp_packets.get_th_seq())
-        print("TCP Acknowledgement Number %s" %self.decode_tcp_packets.get_th_ack())
-        print("TCP Data Offset %s" % self.decode_tcp_packets.get_th_off())
-        print("")
-
-        #print("TCPdecoder",self.decode_tcp_packets.decode(data).get_header_size())
-        #IP.ethertype()
-
+import pyshark
 
 class PacketHandler:
     def __init__(self):
@@ -529,6 +456,8 @@ class ICMPParsed:
              30: {0: 'Traceroute',
                   },
              } # END DICTIONARY
+        pass
+
 
     def get_header_size(self):
         return self.icmp_parsed.get_header_size()
@@ -584,8 +513,34 @@ class EthernetHeaderParsed:
         return self.ethernet_parsed.get_packet()
 
 
-p = PacketHandler()
-p.get_active_devices()
+class DeviceHandler:
+    def __init__(self):
+        self.tsharkCall = '"' +os.environ["ProgramFiles"]+'/Wireshark/tshark.exe"' +" -D "+os.getcwd()
+
+    def get_interfaces(self):
+        self.proc = subprocess.check_output(self.tsharkCall, shell=True)
+        self.decoded_proc = self.proc.decode('ascii')
+        self.all_interfaces = self.decoded_proc.splitlines()
+        return self.all_interfaces
+
+    def select_interface(self):
+        self.interfaces = self.get_interfaces()
+        if len(self.interfaces) == 0:
+            print("No interfaces found")
+        for dev_int in self.interfaces:
+            print(dev_int)
+
+
+
+
+#p = PacketHandler()
+#p.get_active_devices()
+
+d = DeviceHandler()
+ints = d.get_interfaces()
+print(ints)
+
+
 
 '''
 p_handler = PacketHandler()
