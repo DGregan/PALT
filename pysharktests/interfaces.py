@@ -38,10 +38,10 @@ def table_packets(capture):
 
             time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
            # print("\n--------- COL INFO ---------")
-            tcp_dict = [{'Time': time_stamp, 'Source IP': ip.src, 'Dest. IP': ip.dst, 'Protocol': packet.transport_layer,
+            tcp_dict = {'Time': time_stamp, 'Source IP': ip.src, 'Dest. IP': ip.dst, 'Protocol': packet.transport_layer,
                         'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
                         'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
-                        }]
+                        }
             col_dict.append(tcp_dict)
 
         elif packet.transport_layer == 'UDP':
@@ -55,10 +55,10 @@ def table_packets(capture):
                 ip = packet.ipv6
             time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
            # print("\n--------- COL INFO ---------")
-            udp_dict = [{'Time': time_stamp, 'Source IP': ip.src, 'Dest. IP': ip.dst, 'Protocol': packet.transport_layer,
+            udp_dict = {'Time': time_stamp, 'Source IP': ip.src, 'Dest. IP': ip.dst, 'Protocol': packet.transport_layer,
                         'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
                         'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
-                        }]
+                        }
             col_dict.append(udp_dict)
     return col_dict
 

@@ -52,16 +52,18 @@ def analysishub():
     capture.sniff(packet_count=50)
     # eth, ip_info, table, udp
     table_test = table_packets(capture)
-    eth_info, ip_info, table = packet_dump(capture)
-    print("TABLE CONTENTS",table)
-    print(len(table))
+    # eth_info, ip_info, table = packet_dump(capture)
+    print("TABLE CONTENTS\n", table_test)
+    print(len(table_test))
     #pandas_web = pd.DataFrame(table)
     '''
     #broke_web = pd.DataFrame(table_test, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
      #                                  'Source Port', 'Dest. Port'],index=[1]).to_html(classes=['table table-bordered table-hover table-striped'], header=True,
     #index=True)
     '''
-    pandas_web = pd.DataFrame(table_test).to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True)
+    pandas_web = pd.DataFrame(table_test, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
+                                       'Source Port', 'Dest. Port'])\
+        .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True)
 
     return render_template("analysishub.html", pandas_web=pandas_web)
 
