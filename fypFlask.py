@@ -49,19 +49,21 @@ def analysishub():
     device = selected_interface.split()
     capture_device = device[2].strip("()")
     capture = pyshark.LiveCapture(capture_device)
-    capture.sniff(packet_count=50)
+    capture.sniff(packet_count=100)
     # eth, ip_info, table, udp
     table_test = table_packets(capture)
-    # eth_info, ip_info, table = packet_dump(capture)
-    print("TABLE CONTENTS\n", table_test)
+    eth_info, ip_info, table = packet_dump(capture)
+    print("TABLE TEST CONTENTS\n", table_test)
     print(len(table_test))
+    print("TABLE DUMP CONTENTS\n", table)
+    print(len(table))
     #pandas_web = pd.DataFrame(table)
     '''
     #broke_web = pd.DataFrame(table_test, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
      #                                  'Source Port', 'Dest. Port'],index=[1]).to_html(classes=['table table-bordered table-hover table-striped'], header=True,
     #index=True)
     '''
-    pandas_web = pd.DataFrame(table_test, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
+    pandas_web = pd.DataFrame(table, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
                                        'Source Port', 'Dest. Port'])\
         .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True)
 
@@ -75,7 +77,7 @@ def help():
 
 @app.errorhandler(400)
 def page_bad_request(error):
-    resp = make_response(render_template('page_not_found.html'), 400)
+    resp = make_response(render_template('page_bad_request.html'), 400)
     resp.headers['X-Something'] = 'A value'
     # print resp
     return resp

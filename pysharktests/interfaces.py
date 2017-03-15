@@ -55,8 +55,9 @@ def table_packets(capture):
                 ip = packet.ipv6
             time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
            # print("\n--------- COL INFO ---------")
-            udp_dict = {'Time': time_stamp, 'Source IP': ip.src, 'Dest. IP': ip.dst, 'Protocol': packet.transport_layer,
-                        'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
+            udp_dict = {'Time': time_stamp, 'Source IP': ip.src.upper(), 'Dest. IP': ip.dst.upper(),
+                        'Protocol': packet.transport_layer, 'Source MAC': packet.eth.src.upper(),
+                        'Dest. MAC': packet.eth.dst.upper(),
                         'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                         }
             col_dict.append(udp_dict)
@@ -77,6 +78,9 @@ def packet_dump(capture):
                # ip = packet.ip
                 ip_info = parse_ip(packet, ip_version)
                 print(ip_info)
+                table_info = (parse_table(packet, ip_version))
+                print(table_info)
+                merged_list.append(table_info)
                 #icmp_info = parse_icmp(packet)
                 #print(icmp_info)
 
@@ -84,37 +88,37 @@ def packet_dump(capture):
                 #ip = packet.ip
                 ip_info = parse_ip(packet, ip_version)
                 print(ip_info)
+                table_info = (parse_table(packet, ip_version))
+                print(table_info)
+                merged_list.append(table_info)
 
             if packet.transport_layer == 'TCP':
                 tcp_info = parse_tcp(packet)
                 print(tcp_info)
-                table_info = (parse_table(packet, ip_version))
-                print(table_info)
+
                 if packet.highest_layer == 'HTTP':
                     http_info = parse_http(packet)
                     print(http_info)
-                    return (eth_info, ip_info, table_info, tcp_info, http_info)
+                    #return (eth_info, ip_info, table_info, tcp_info, http_info)
 
             elif packet.transport_layer == 'UDP':
                 udp_info = parse_udp(packet)
                 print(udp_info)
-                table_info = (parse_table(packet, ip_version))
-                print(table_info)
 
                 if packet.highest_layer == 'HTTP':
                     http_info = parse_http(packet)
                    # print(http_info)
-                    return (eth_info, ip_info, table_info, udp_info, http_info)
+                    #return (eth_info, ip_info, table_info, udp_info, http_info)
 
             elif packet.transport_layer == None:
                 #table_info = parse_table(packet, ip_version)
                 print('Transport Layer = None')
                 #print(table_info)
             print("\n***************  ***************")
-            merged_list += table_info
+
             print("MERGED LIST", merged_list)
 
-        return (eth_info, ip_info, table_info)
+        return (eth_info, ip_info, merged_list)
 
     except OSError as error:
         print("OS Error: {0}".format(error))
@@ -127,7 +131,7 @@ def packet_dump(capture):
 
 def parse_table(packet, ip_version):
     try:
-        col_dict = []
+        #col_dict = []
         print("\n---------TABLE INFO ----------")
         if ip_version == 4:
             if packet.transport_layer == 'TCP':
@@ -137,7 +141,8 @@ def parse_table(packet, ip_version):
                      'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
                      'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
                 }
-                col_dict.append(table_dict)
+                #col_dict.append(table_dict)
+                return table_dict
             elif packet.transport_layer == 'UDP':
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 table_dict = {
@@ -146,7 +151,8 @@ def parse_table(packet, ip_version):
                     'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
                     'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                 }
-                col_dict.append(table_dict)
+                #col_dict.append(table_dict)
+                return table_dict
         elif ip_version == 6:
             if packet.transport_layer == 'TCP':
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -156,7 +162,8 @@ def parse_table(packet, ip_version):
                     'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
                     'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
                 }
-                col_dict.append(table_dict)
+                #col_dict.append(table_dict)
+                return table_dict
             elif packet.transport_layer == 'UDP':
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 table_dict = {
@@ -165,8 +172,8 @@ def parse_table(packet, ip_version):
                     'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
                     'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                 }
-                col_dict.append(table_dict)
-        return col_dict
+                #col_dict.append(table_dict)
+                return table_dict
 
     except OSError as error:
         print("OS Error: {0}".format(error))
