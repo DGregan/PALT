@@ -66,61 +66,64 @@ def table_packets(capture):
 
 def packet_dump(capture):
     try:
-        all_ip, all_eth, all_tcp, all_udp, all_http = ([] for i in range(5))
-        merged_list = []
+        all_ip, all_eth, all_table, all_tcp, all_udp, all_http = ([] for i in range(6))
         for packet in capture:
-            print("\n************ PACKET ***************")
+            #print("\n************ PACKET ***************")
             eth_info = parse_eth(packet)
-            print(eth_info)
+            #print(eth_info)
+            all_eth.append(eth_info)
 
             ip_version = get_ip_version(packet)
             if ip_version == 4:
                # ip = packet.ip
                 ip_info = parse_ip(packet, ip_version)
-                print(ip_info)
+                #print(ip_info)
                 all_ip.append(ip_info)
                 table_info = (parse_table(packet, ip_version))
-                print(table_info)
-                merged_list.append(table_info)
+                #print(table_info)
+                all_table.append(table_info)
                 #icmp_info = parse_icmp(packet)
                 #print(icmp_info)
 
             elif ip_version == 6:
                 #ip = packet.ip
                 ip_info = parse_ip(packet, ip_version)
-                print(ip_info)
+                #print(ip_info)
                 all_ip.append(ip_info)
                 table_info = (parse_table(packet, ip_version))
-                print(table_info)
-                merged_list.append(table_info)
+                #print(table_info)
+                all_table.append(table_info)
 
             if packet.transport_layer == 'TCP':
                 tcp_info = parse_tcp(packet)
-                print(tcp_info)
+                #print(tcp_info)
+                all_tcp.append(tcp_info)
 
                 if packet.highest_layer == 'HTTP':
                     http_info = parse_http(packet)
-                    print(http_info)
-                    #return (eth_info, ip_info, table_info, tcp_info, http_info)
+                    #print(http_info)
+                    all_http.append(http_info)
+                    return all_eth, all_ip, all_table, all_tcp, all_udp, all_http
 
             elif packet.transport_layer == 'UDP':
                 udp_info = parse_udp(packet)
-                print(udp_info)
+                #print(udp_info)
+                all_udp.append(udp_info)
 
                 if packet.highest_layer == 'HTTP':
                     http_info = parse_http(packet)
-                   # print(http_info)
+                    all_http.append(http_info)
+                    return all_eth, all_ip, all_table, all_tcp, all_udp, all_http
+                   # #print(http_info)
                     #return (eth_info, ip_info, table_info, udp_info, http_info)
-
+            '''
             elif packet.transport_layer == None:
-                #table_info = parse_table(packet, ip_version)
-                print('Transport Layer = None')
+                table_info = parse_table(packet, ip_version)
+                #print('Transport Layer = None')
                 #print(table_info)
-            print("\n***************  ***************")
-
-            print("MERGED LIST", merged_list)
-
-        return (eth_info, all_ip, merged_list)
+            #print("\n***************  ***************")
+            '''
+        return all_eth, all_ip, all_table, all_tcp, all_udp
 
     except OSError as error:
         print("OS Error: {0}".format(error))
@@ -134,7 +137,7 @@ def packet_dump(capture):
 def parse_table(packet, ip_version):
     try:
         #col_dict = []
-        print("\n---------TABLE INFO ----------")
+        #print("\n---------TABLE INFO ----------")
         if ip_version == 4:
             if packet.transport_layer == 'TCP':
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -189,7 +192,7 @@ def parse_table(packet, ip_version):
 
 def parse_eth(packet):
     try:
-        print("\n---------ETH INFO ----------")
+        #print("\n---------ETH INFO ----------")
         eth_type = {
             '0x0800': 'Internet Protocol version 4', '0x0806': 'Address Resolution Protocol (ARP)', '0x0842': 'Wake-on-LAN',
             '0x8035': 'Reverse Address Resolution Protocol (RARP)',
@@ -227,7 +230,7 @@ def parse_eth(packet):
 def parse_ip(packet, ip_version):
     try:
         if ip_version == 4:
-            print("\n---------IPv4 INFO ----------")
+            #print("\n---------IPv4 INFO ----------")
             ip_info = {
                 'Version': packet.ip.version, 'Header Length': packet.ip.hdr_len, 'Type of Service': 'N/A',
                 'Total Length': packet.ip.len, 'Identification': packet.ip.id, 'Protocol' : packet.ip.layer_name,
@@ -238,7 +241,7 @@ def parse_ip(packet, ip_version):
             }
             return ip_info
         elif ip_version == 6:
-            print("\n---------IPv6 INFO ----------")
+            #print("\n---------IPv6 INFO ----------")
             ip_info = {
                 'Version': ip_version,
                 'Traffic Class': packet.ipv6.tclass,
@@ -263,7 +266,7 @@ def parse_ip(packet, ip_version):
 
 def parse_tcp(packet):
     try:
-        print("\n---------TCP INFO ----------")
+        #print("\n---------TCP INFO ----------")
         tcp_info = {'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport, 'Sequence Number': packet.tcp.seq,
                     'Acknowledgement': packet.tcp.ack, 'Data Offset': 'N/A', 'Reserve': 'N/A',
                     'Flags': {'CWR': packet.tcp.flags_cwr, 'ECN': packet.tcp.flags_ecn, 'URG': packet.tcp.flags_urg,
@@ -287,7 +290,7 @@ def parse_tcp(packet):
 
 def parse_udp(packet):
     try:
-        print("\n---------UDP INFO ----------")
+        #print("\n---------UDP INFO ----------")
         udp_info = {
             'Source Port': packet.udp.srcport,
             'Dest. Port': packet.udp.dstport,
@@ -308,7 +311,7 @@ def parse_udp(packet):
 
 def parse_http(packet):
     try:
-        print("\n---------HTTP INFO ----------")
+        #print("\n---------HTTP INFO ----------")
         http_info = {
             'Connection': packet.http.connection,
             'Protocol': packet.http.layer_name.upper(),
@@ -330,7 +333,7 @@ def parse_icmp(packet):
     try:
         # TODO CHECK FOR ICMPV6
     #if icmp_version == None:
-        print("\n---------ICMP INFO ----------")
+        #print("\n---------ICMP INFO ----------")
         icmp_info = {
             #'Type': packet.icmp.checksum
             #'Code': packet.icmp.code,

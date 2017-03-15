@@ -45,26 +45,24 @@ def analysishub():
     capture.sniff(packet_count=50)
     # eth, ip_info, table, udp
     table_test = table_packets(capture)
-    eth_info, ip_info, table = packet_dump(capture)
+    eth_info, ip_info, table, tcp_info, udp_info = packet_dump(capture)
     print("TABLE TEST CONTENTS\n", table_test)
     print(len(table_test))
     print("TABLE DUMP CONTENTS\n", table)
     print(len(table))
     print("IP INFO CONTENTS\n", ip_info)
     print(len(ip_info))
+    print("TCP INFO CONTENTS\n", tcp_info)
+    print(len(tcp_info))
+    print("UDP INFO CONTENTS\n", udp_info)
+    print(len(udp_info))
 
-    #pandas_web = pd.DataFrame(table)
-    '''
-    #broke_web = pd.DataFrame(table_test, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
-     #                                  'Source Port', 'Dest. Port'],index=[1]).to_html(classes=['table table-bordered table-hover table-striped'], header=True,
-    #index=True)
-    '''
     pandas_web = pd.DataFrame(table, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
                                        'Source Port', 'Dest. Port'])\
         .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True, max_rows=20)
     #pandas2 = pd.DataFrame(ip_info).to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True, max_rows=20)
 
-    return render_template("analysishub.html", pandas_web=pandas_web, ip_info=ip_info)
+    return render_template("analysishub.html", pandas_web=pandas_web, ip_info=ip_info, eth_info=eth_info)
 
 
 @app.route('/help')

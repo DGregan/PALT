@@ -1,15 +1,45 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
 
 @import url('https://fonts.googleapis.com/css?family=Raleway');
-
-.panel-heading [data-toggle="collapse"]:after {
-    font-family: 'Raleway', sans-serif;
-    content: "\f078"; /* "play" icon */
+button.accordion:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #777;
     float: right;
-    color: #F58723;
-    font-size: 18px;
-    line-height: 18px;
+    margin-left: 5px;
 }
+
+button.accordion.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+
+/* Style the buttons that are used to open and close the accordion panel */
+button.accordion {
+    background-color: #232321;
+    color: whitesmoke;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+button.accordion.active, button.accordion:hover {
+    background-color: #3d3d3b;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+div.panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+}
+
+
 
 thead {
     background-color: #232321;
