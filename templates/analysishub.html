@@ -53,33 +53,7 @@
         </div><!-- row -->
     </div><!-- container -->
 </main> <!-- cd-main-content -->
-<!--
 
-
-        - PANED WINDOWS
-            - PANES
-                - INFO MESSAGE / NO PANED DISPLAYED = "CLICK A PACKET FORM THE TABLE ABOVE TO DISPLAY ITS CONTENTS"
-                - IP (STATIC)
-                - TCP / UDP (STATIC)
-                - HTTP
-                    - HTTP RESPONSE CODES
-                - ARP
-                    - ARP RESPONSE CODES
-                - SNMP
-                    - ?
-                - CAPTURED DATA
-
-         - BUTTONS
-            - START PACKET CAPTURE
-                - GREYED OUT IF ALREADY RUNNING CAPTURE
-            - END PACKET CAPTURE
-                - GREYED OUT IF ALREADY STOPPED CAPTURE
-
-        - HELP SECTIONS
-            - PACKET STRUCTURES
-            - DESCRIBE LAYOUT
-
--->
 {% include 'js-static.html' %}
 </body>
 </html>
@@ -90,7 +64,7 @@ $(document).ready(function () {
             type: 'POST',
             data: 'pandas_web',
             success: function (response) {
-            alert('Winning');
+            alert('Packet Analysis beginning');
             console.log(pandas_web);
             },
             error: function (error) {

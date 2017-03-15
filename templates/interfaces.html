@@ -51,8 +51,8 @@
                 Select an interface below and 'Submit' to begin the packet capture.
             </p>
             <br>
-                <form action="#" method="POST">
-                    <select title="interface selection" class="form-control">
+                <form action="/analysishub" method="POST">
+                    <select name="selected_interface" title="interface selection" class="form-control">
                         {% for device in active_devices %}
                             <option>{{ device | safe }}</option>
                         {% endfor %}
@@ -69,27 +69,3 @@
 {% include 'js-static.html' %}
 </body>
 </html>
-
-
-<!--
-    STRUCTURE
-        - SEARCH FOR INTERFACES
-            - BUTTON TO SEARCH FOR DEVICES 'BEGIN SEARCH'
-                - DISPLAY ALL FOUND DEVICES
-                - DISPLAY DEVICES THAT CAN CAPTURE DATA
-
-            - FILTER OPTIONS
-                - DISPLAY PRE-FILTER OPTIONS
-                    - IP, TCP, UDP, HTTP,
-                    - HAVE OWN FILTER LIST?
-
-            - BUTTON
-                - START ANALYSIS
-                    - SHOULD USE SELECTED INTERFACE / FILTERS AND INITIATED PACKET HANDLER
-
-            - HELP SECTION
-                - INFO
-                    - WHAT THE SEARCH DOES
-                    - WHAT WAS RETURNED
--->
-

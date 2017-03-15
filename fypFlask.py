@@ -25,7 +25,7 @@ def about():
     return render_template("about.html")
 
 
-@app.route('/interfaces')
+@app.route('/interfaces', methods=['post', 'get'])
 # @app.route('/interfaces/<device>/')
 def interfaces(all_devices=None, active_devices=None):
     '''
@@ -37,27 +37,33 @@ def interfaces(all_devices=None, active_devices=None):
     '''
     # device_handler = DeviceHandler()
     # all_devices = device_handler.get_interfaces()
-    # active_devices = all_devices
+    all_devices = get_interfaces()
+    active_devices = all_devices
     return render_template("interfaces.html", all_devices=all_devices, active_devices=active_devices)
 
 
-@app.route('/analysishub')
+@app.route('/analysishub', methods=['post', 'get'])
 # @app.route('/interfaces/<device>/analysishub')
-def analysishub(data=None):
-    interfaces = get_interfaces()
-    if 'WiFi' in str(interfaces[0]):
-        int_type = 'WiFi'
-    capture = pyshark.LiveCapture(int_type)
-    capture.sniff(timeout=100)
-    table = table_packets(capture)
-    pandas_web = pd.DataFrame(table,
-                              columns=['Time', 'Source IP', 'Dest IP', 'Protocol', 'Source MAC', 'Dest. MAC',
-                                       'Source Port', 'Dest. Port'],
-                              index=[1]).to_html(classes=['table table-bordered table-hover table-striped'], header=True,
-    index=True)
-    pandas_web.style()
+def analysishub():
+    selected_interface = request.form['selected_interface']
+    device = selected_interface.split()
+    capture_device = device[2].strip("()")
+    capture = pyshark.LiveCapture(capture_device)
+    capture.sniff(packet_count=50)
+    # eth, ip_info, table, udp
+    table_test = table_packets(capture)
+    eth_info, ip_info, table = packet_dump(capture)
+    print("TABLE CONTENTS",table)
+    print(len(table))
+    #pandas_web = pd.DataFrame(table)
+    '''
+    #broke_web = pd.DataFrame(table_test, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
+     #                                  'Source Port', 'Dest. Port'],index=[1]).to_html(classes=['table table-bordered table-hover table-striped'], header=True,
+    #index=True)
+    '''
+    pandas_web = pd.DataFrame(table_test).to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True)
 
-    return render_template("analysishub.html", data=None, pandas_web=pandas_web)
+    return render_template("analysishub.html", pandas_web=pandas_web)
 
 
 @app.route('/help')
