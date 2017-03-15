@@ -78,6 +78,7 @@ def packet_dump(capture):
                # ip = packet.ip
                 ip_info = parse_ip(packet, ip_version)
                 print(ip_info)
+                all_ip.append(ip_info)
                 table_info = (parse_table(packet, ip_version))
                 print(table_info)
                 merged_list.append(table_info)
@@ -88,6 +89,7 @@ def packet_dump(capture):
                 #ip = packet.ip
                 ip_info = parse_ip(packet, ip_version)
                 print(ip_info)
+                all_ip.append(ip_info)
                 table_info = (parse_table(packet, ip_version))
                 print(table_info)
                 merged_list.append(table_info)
@@ -118,7 +120,7 @@ def packet_dump(capture):
 
             print("MERGED LIST", merged_list)
 
-        return (eth_info, ip_info, merged_list)
+        return (eth_info, all_ip, merged_list)
 
     except OSError as error:
         print("OS Error: {0}".format(error))
@@ -137,18 +139,19 @@ def parse_table(packet, ip_version):
             if packet.transport_layer == 'TCP':
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 table_dict = {
-                    'Time': time_stamp, 'Source IP': packet.ip.src, 'Dest. IP': packet.ip.dst, 'Protocol': packet.transport_layer,
-                     'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
-                     'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
+                    'Time': time_stamp, 'Source IP': packet.ip.src.upper(), 'Dest. IP': packet.ip.dst.upper(),
+                    'Protocol': packet.transport_layer,
+                    'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
+                    'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
                 }
                 #col_dict.append(table_dict)
                 return table_dict
             elif packet.transport_layer == 'UDP':
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 table_dict = {
-                    'Time': time_stamp, 'Source IP': packet.ip.src, 'Dest. IP': packet.ip.dst,
+                    'Time': time_stamp, 'Source IP': packet.ip.src.upper(), 'Dest. IP': packet.ip.dst.upper(),
                     'Protocol': packet.transport_layer,
-                    'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
+                    'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
                     'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                 }
                 #col_dict.append(table_dict)
@@ -159,7 +162,7 @@ def parse_table(packet, ip_version):
                 table_dict = {
                     'Time': time_stamp, 'Source IP': packet.ipv6.src.upper(), 'Dest. IP': packet.ipv6.dst.upper(),
                     'Protocol': packet.transport_layer,
-                    'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
+                    'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
                     'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
                 }
                 #col_dict.append(table_dict)
@@ -169,7 +172,7 @@ def parse_table(packet, ip_version):
                 table_dict = {
                     'Time': time_stamp, 'Source IP': packet.ipv6.src.upper(), 'Dest. IP': packet.ipv6.dst.upper(),
                     'Protocol': packet.transport_layer,
-                    'Source MAC': packet.eth.src, 'Dest. MAC': packet.eth.dst,
+                    'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
                     'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                 }
                 #col_dict.append(table_dict)

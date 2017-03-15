@@ -28,13 +28,6 @@ def about():
 @app.route('/interfaces', methods=['post', 'get'])
 # @app.route('/interfaces/<device>/')
 def interfaces(all_devices=None, active_devices=None):
-    '''
-    packet_handler = PacketHandler()
-    all_devices = packet_handler.get_all_devices()
-    if len(all_devices) <= 0:
-        print("ERROR: No Devices Found")
-    active_devices = packet_handler.get_active_devices()
-    '''
     # device_handler = DeviceHandler()
     # all_devices = device_handler.get_interfaces()
     all_devices = get_interfaces()
@@ -49,7 +42,7 @@ def analysishub():
     device = selected_interface.split()
     capture_device = device[2].strip("()")
     capture = pyshark.LiveCapture(capture_device)
-    capture.sniff(packet_count=100)
+    capture.sniff(packet_count=50)
     # eth, ip_info, table, udp
     table_test = table_packets(capture)
     eth_info, ip_info, table = packet_dump(capture)
@@ -57,6 +50,9 @@ def analysishub():
     print(len(table_test))
     print("TABLE DUMP CONTENTS\n", table)
     print(len(table))
+    print("IP INFO CONTENTS\n", ip_info)
+    print(len(ip_info))
+
     #pandas_web = pd.DataFrame(table)
     '''
     #broke_web = pd.DataFrame(table_test, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
@@ -65,9 +61,10 @@ def analysishub():
     '''
     pandas_web = pd.DataFrame(table, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
                                        'Source Port', 'Dest. Port'])\
-        .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True)
+        .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True, max_rows=20)
+    #pandas2 = pd.DataFrame(ip_info).to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True, max_rows=20)
 
-    return render_template("analysishub.html", pandas_web=pandas_web)
+    return render_template("analysishub.html", pandas_web=pandas_web, ip_info=ip_info)
 
 
 @app.route('/help')
