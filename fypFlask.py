@@ -44,12 +44,12 @@ def analysishub():
     capture = pyshark.LiveCapture(capture_device)
     capture.sniff(packet_count=50)
     # eth, ip_info, table, udp
-    table_test = table_packets(capture)
+
     eth_info, ip_info, table, tcp_info, udp_info = packet_dump(capture)
-    print("TABLE TEST CONTENTS\n", table_test)
-    print(len(table_test))
     print("TABLE DUMP CONTENTS\n", table)
     print(len(table))
+    print("ETH INFO CONTENTS\n", eth_info)
+    print(len(eth_info))
     print("IP INFO CONTENTS\n", ip_info)
     print(len(ip_info))
     print("TCP INFO CONTENTS\n", tcp_info)
@@ -62,7 +62,8 @@ def analysishub():
         .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True, max_rows=20)
     #pandas2 = pd.DataFrame(ip_info).to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True, max_rows=20)
 
-    return render_template("analysishub.html", pandas_web=pandas_web, ip_info=ip_info, eth_info=eth_info)
+    return render_template("analysishub.html", pandas_web=pandas_web, ip_info=ip_info, eth_info=eth_info,
+                           tcp_info=tcp_info, udp_info=udp_info)
 
 
 @app.route('/help')

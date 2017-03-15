@@ -14,28 +14,76 @@
                 <div class="table-responsive">
                     {{ pandas_web | safe }}
                 </div>
+                <br>
 
-            <button class="accordion">IP INFO</button>
-            <div class="panel">
-                {% for dict_item in ip_info %}
-                    {{ loop.index }}
-                    {% for key, value in dict_item.items() %}
-                        <p>{{ key | safe }}: {{ value | safe }}</p>
-                    {% endfor %}
-                    <br>
-                {% endfor %}
-            </div>
+                <!--       IP ACCORDION BUTTON         -->
+                <button class="accordion">IP INFO</button>
+                <div class="panel">
+                    {% if ip_info == [] %}
+                        <br>
+                        <h5>NO TCP CAPTURED</h5>
+                    {% endif %}
 
-            <button class="accordion">ETH INFO</button>
-            <div class="panel">
-                {% for dict_item in eth_info %}
+                    {% for dict_item in ip_info %}
                         {{ loop.index }}
                         {% for key, value in dict_item.items() %}
                             <p>{{ key | safe }}: {{ value | safe }}</p>
                         {% endfor %}
                         <br>
                     {% endfor %}
-            </div>
+                </div>
+
+                <!--       eth ACCORDION BUTTON         -->
+                <button class="accordion">ETH INFO</button>
+                <div class="panel">
+                    {% if eth_info == [] %}
+                        <br>
+                        <h5>NO TCP CAPTURED</h5>
+                    {% endif %}
+
+                    {% for dict_item in eth_info %}
+                            {{ loop.index }}
+                            {% for key, value in dict_item.items() %}
+                                <p>{{ key | safe }}: {{ value | safe }}</p>
+                            {% endfor %}
+                            <br>
+                        {% endfor %}
+                </div>
+
+                <!--       TCP ACCORDION BUTTON         -->
+                <button class="accordion">TCP INFO</button>
+                <div class="panel">
+                <br>
+                    {% if tcp_info == [] %}
+                        <br>
+                        <h5>NO TCP CAPTURED</h5>
+                    {% endif %}
+
+                    {% for dict_item in tcp_info %}
+                            {{ loop.index }}
+                            {% for key, value in dict_item.items() %}
+                                <p>{{ key | safe }}: {{ value | safe }}</p>
+                            {% endfor %}
+                            <br>
+                    {% endfor %}
+                </div>
+
+                <!--        UDP ACCORDION BUTTON         -->
+                <button class="accordion">UDP INFO</button>
+                <div class="panel">
+                    {% if udp_info == [] %}
+                        <br>
+                        <h5>NO UDP CAPTURED</h5>
+                    {% endif %}
+
+                    {% for dict_item in udp_info %}
+                            {{ loop.index }}
+                            {% for key, value in dict_item.items() %}
+                                <p>{{ key | safe }}: {{ value | safe }}</p>
+                            {% endfor %}
+                            <br>
+                        {% endfor %}
+                </div>
             </div>
         </div>
 

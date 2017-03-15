@@ -22,7 +22,8 @@ button.accordion {
     padding: 18px;
     width: 100%;
     text-align: left;
-    border: none;
+    border-style: solid;
+    border-color: whitesmoke;
     outline: none;
     transition: 0.4s;
 }
