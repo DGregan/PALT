@@ -42,14 +42,14 @@ def analysishub():
     device = selected_interface.split()
     capture_device = device[2].strip("()")
     capture = pyshark.LiveCapture(capture_device)
-    capture.sniff(packet_count=50)
+    capture.sniff(packet_count=50, timeout=100)
     # eth, ip_info, table, udp
-
+    table_test = table_packets(capture)
     eth_info, ip_info, table, tcp_info, udp_info = packet_dump(capture)
+    print("TABLE TEST CONTENTS\n", table_test)
+    print(len(table_test))
     print("TABLE DUMP CONTENTS\n", table)
     print(len(table))
-    print("ETH INFO CONTENTS\n", eth_info)
-    print(len(eth_info))
     print("IP INFO CONTENTS\n", ip_info)
     print(len(ip_info))
     print("TCP INFO CONTENTS\n", tcp_info)
@@ -57,9 +57,9 @@ def analysishub():
     print("UDP INFO CONTENTS\n", udp_info)
     print(len(udp_info))
 
-    pandas_web = pd.DataFrame(table, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
+    pandas_web = pd.DataFrame(table_test, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
                                        'Source Port', 'Dest. Port'])\
-        .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True, max_rows=20)
+        .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True)
     #pandas2 = pd.DataFrame(ip_info).to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True, max_rows=20)
 
     return render_template("analysishub.html", pandas_web=pandas_web, ip_info=ip_info, eth_info=eth_info,

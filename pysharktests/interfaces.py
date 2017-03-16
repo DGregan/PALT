@@ -79,6 +79,7 @@ def packet_dump(capture):
                 ip_info = parse_ip(packet, ip_version)
                 #print(ip_info)
                 all_ip.append(ip_info)
+               # TODO - IF NONE ITERABLE STILL CONTINUES, USE TABLE_PACKETS AS IT SEEMS TO SKIP NONE VALUES
                 table_info = (parse_table(packet, ip_version))
                 #print(table_info)
                 all_table.append(table_info)
@@ -136,7 +137,7 @@ def packet_dump(capture):
 
 def parse_table(packet, ip_version):
     try:
-        #col_dict = []
+        # TODO - ERROR CHECKING IF 'NONE' VALUES ARE CAUGHT
         #print("\n---------TABLE INFO ----------")
         if ip_version == 4:
             if packet.transport_layer == 'TCP':
@@ -147,7 +148,6 @@ def parse_table(packet, ip_version):
                     'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
                     'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
                 }
-                #col_dict.append(table_dict)
                 return table_dict
             elif packet.transport_layer == 'UDP':
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -168,7 +168,6 @@ def parse_table(packet, ip_version):
                     'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
                     'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
                 }
-                #col_dict.append(table_dict)
                 return table_dict
             elif packet.transport_layer == 'UDP':
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -178,7 +177,6 @@ def parse_table(packet, ip_version):
                     'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
                     'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                 }
-                #col_dict.append(table_dict)
                 return table_dict
 
     except OSError as error:
@@ -232,10 +230,10 @@ def parse_ip(packet, ip_version):
         if ip_version == 4:
             #print("\n---------IPv4 INFO ----------")
             ip_info = {
-                'Version': packet.ip.version, 'Header Length': packet.ip.hdr_len, 'Type of Service': 'N/A',
-                'Total Length': packet.ip.len, 'Identification': packet.ip.id, 'Protocol' : packet.ip.layer_name,
+                'Version': packet.ip.version, 'Header Length': packet.ip.hdr_len + " bytes", 'Type of Service': 'N/A',
+                'Total Length': packet.ip.len + " bytes", 'Identification': packet.ip.id, 'Protocol': packet.ip.layer_name.upper(),
                 'Flags': {'RB': packet.ip.flags_rb, 'D': packet.ip.flags_df, 'M': packet.ip.flags_mf},
-                'Fragment Offset': packet.ip.frag_offset, 'Time To Live': packet.ip.ttl, 'Protocol used': packet.ip.proto,
+                'Fragment Offset': packet.ip.frag_offset, 'Time To Live': packet.ip.ttl, 'Protocol Number': packet.ip.proto.upper(),
                 'Header Checksum': packet.ip.checksum, 'Checksum Status': packet.ip.checksum_status,
                 'Source Address': packet.ip.src, 'Destination Address': packet.ip.dst
             }
@@ -274,8 +272,9 @@ def parse_tcp(packet):
                               'SYN': packet.tcp.flags_syn, 'FIN': packet.tcp.flags_fin
                               },
                     'Window Size': packet.tcp.window_size, 'Window Size Value': packet.tcp.window_size_value,
-                    'Header Length': packet.tcp.hdr_len, 'Protocol': packet.tcp.layer_name.upper()
-                    , 'Checksum': packet.tcp.checksum, 'Checksum Status': packet.tcp.checksum_status, 'Urgent Pointer': packet.tcp.urgent_pointer
+                    'Header Length': packet.tcp.hdr_len + " bytes", 'Protocol': packet.tcp.layer_name.upper(),
+                    'Checksum': packet.tcp.checksum, 'Checksum Status': packet.tcp.checksum_status,
+                    'Urgent Pointer': packet.tcp.urgent_pointer
                     #, 'Segment Data': packet.tcp.segment_data
                     }  # tcp_dict
         return tcp_info
@@ -295,7 +294,7 @@ def parse_udp(packet):
             'Source Port': packet.udp.srcport,
             'Dest. Port': packet.udp.dstport,
             'Protocol': packet.udp.layer_name.upper(),
-            'Length': packet.udp.length,
+            'Length': packet.udp.length + " bytes",
             'Checksum': packet.udp.checksum,
             'Checksum Status': packet.udp.checksum_status
         }
