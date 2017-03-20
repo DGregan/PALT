@@ -30,7 +30,7 @@ button.accordion {
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 button.accordion.active, button.accordion:hover {
-    background-color: #3d3d3b;
+    background-color: #494947;
 }
 
 /* Style the accordion panel. Note: hidden by default */
@@ -39,6 +39,44 @@ div.panel {
     background-color: white;
     display: none;
 }
+
+/* INNER ACCORDION */
+
+button.inner-accordion {
+    background-color: #232321;
+    color: whitesmoke;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border-style: solid;
+    border-color: whitesmoke;
+    outline: none;
+    transition: 0.4s;
+}
+
+
+button.inner-accordion.active, button.inner-accordion:hover {
+    background-color: #3d3d3b;
+}
+
+button.inner-accordion:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #777;
+    float: right;
+    margin-left: 5px;
+}
+div.inner-panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+}
+
+button.inner-accordion.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
 
 
 

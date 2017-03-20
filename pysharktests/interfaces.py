@@ -67,56 +67,44 @@ def table_packets(capture):
 def packet_dump(capture):
     try:
         all_ip, all_eth, all_table, all_tcp, all_udp, all_http = ([] for i in range(6))
+        packet_info = []
         for packet in capture:
-            #print("\n************ PACKET ***************")
             eth_info = parse_eth(packet)
-            #print(eth_info)
             all_eth.append(eth_info)
-
             ip_version = get_ip_version(packet)
             if ip_version == 4:
-               # ip = packet.ip
                 ip_info = parse_ip(packet, ip_version)
-                #print(ip_info)
                 all_ip.append(ip_info)
                # TODO - IF NONE ITERABLE STILL CONTINUES, USE TABLE_PACKETS AS IT SEEMS TO SKIP NONE VALUES
                 table_info = (parse_table(packet, ip_version))
-                #print(table_info)
                 all_table.append(table_info)
                 #icmp_info = parse_icmp(packet)
                 #print(icmp_info)
 
             elif ip_version == 6:
-                #ip = packet.ip
                 ip_info = parse_ip(packet, ip_version)
-                #print(ip_info)
                 all_ip.append(ip_info)
                 table_info = (parse_table(packet, ip_version))
-                #print(table_info)
                 all_table.append(table_info)
 
             if packet.transport_layer == 'TCP':
                 tcp_info = parse_tcp(packet)
-                #print(tcp_info)
                 all_tcp.append(tcp_info)
-
                 if packet.highest_layer == 'HTTP':
                     http_info = parse_http(packet)
-                    #print(http_info)
                     all_http.append(http_info)
                     return all_eth, all_ip, all_table, all_tcp, all_udp, all_http
 
             elif packet.transport_layer == 'UDP':
                 udp_info = parse_udp(packet)
-                #print(udp_info)
                 all_udp.append(udp_info)
-
                 if packet.highest_layer == 'HTTP':
                     http_info = parse_http(packet)
                     all_http.append(http_info)
                     return all_eth, all_ip, all_table, all_tcp, all_udp, all_http
-                   # #print(http_info)
-                    #return (eth_info, ip_info, table_info, udp_info, http_info)
+
+
+
             '''
             elif packet.transport_layer == None:
                 table_info = parse_table(packet, ip_version)
@@ -124,6 +112,7 @@ def packet_dump(capture):
                 #print(table_info)
             #print("\n***************  ***************")
             '''
+
         return all_eth, all_ip, all_table, all_tcp, all_udp
 
     except OSError as error:
