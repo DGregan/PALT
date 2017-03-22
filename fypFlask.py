@@ -1,7 +1,7 @@
-from flask import Flask, render_template, redirect, request, url_for, make_response
-# from PacketHandler import PacketHandler, DeviceHandler
-from pysharktests.interfaces import *
 import pandas as pd
+import pyshark
+from flask import Flask, render_template, redirect, request, url_for, make_response
+from Handler import DeviceHandler, CaptureHandler
 
 app = Flask(__name__)
 app.config.from_object('config.TestConfig')
@@ -19,31 +19,29 @@ def index():
 
 @app.route('/about')
 def about():
-    # return 'About Page'
-    # my_p = PacketHandler()
-    #  myvalue =my_p.get_all_devices()
+    app.logger.log()
+    app.logger.info("RENDERING: About Template")
     return render_template("about.html")
 
 
 @app.route('/interfaces', methods=['post', 'get'])
-# @app.route('/interfaces/<device>/')
 def interfaces(all_devices=None, active_devices=None):
-    # device_handler = DeviceHandler()
-    # all_devices = device_handler.get_interfaces()
-    all_devices = get_interfaces()
+    dh = DeviceHandler()
+    all_devices = dh.get_devices()
     active_devices = all_devices
     return render_template("interfaces.html", all_devices=all_devices, active_devices=active_devices)
 
 
 @app.route('/analysishub', methods=['post', 'get'])
-# @app.route('/interfaces/<device>/analysishub')
 def analysishub():
-    selected_interface = request.form['selected_interface']
-    device = selected_interface.split()
-    capture_device = device[2].strip("()")
+    dh = DeviceHandler()
+    ch = CaptureHandler()
+    dev = request.form['selected_interface']
+    capture_device = dh.selected_device(dev)
+
     capture = pyshark.LiveCapture(capture_device)
     capture.sniff(packet_count=50, timeout=100)
-    eth_info, ip_info, table, tcp_info, udp_info = packet_dump(capture)
+    eth_info, ip_info, table, tcp_info, udp_info = ch.packet_dump(capture)
     pandas_web = pd.DataFrame(table, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
                                               'Source Port', 'Dest. Port'])\
         .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True)

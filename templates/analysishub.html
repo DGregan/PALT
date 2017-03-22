@@ -321,7 +321,10 @@
                                             <p>A ... is...</p>
                                             <br>
                                             <p>Packet's ...: {{ value | safe }}</p>
+                                            {% for fkey, fvalue in key.items() %}
+                                                <p>FLAGS: {{ value | safe }}</p>
                                             <br>
+                                            {% endfor %}
 
                                     {% elif key == 'Window Size' %}
                                             <h5>What is the ...</h5>
