@@ -140,6 +140,8 @@ def parse_table(packet, ip_version):
                 return table_dict
             elif packet.transport_layer == 'UDP':
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                if packet.udp.srcport == None:
+                    packet.udp.srcport = 'N/A'
                 table_dict = {
                     'Time': time_stamp, 'Source IP': packet.ip.src.upper(), 'Dest. IP': packet.ip.dst.upper(),
                     'Protocol': packet.transport_layer,
@@ -202,8 +204,19 @@ def parse_eth(packet):
             'Destination Address': packet.eth.dst.upper(),
             'Protocol': packet.eth.layer_name.upper(),
             #'Padding': packet.eth.padding,
-            'Type': packet.eth.type
+            'Type Code': packet.eth.type
         }
+
+        # Check eth_info['Type Code'] against eth_type for a match
+        # If match, add 'english' of type code to eth_info
+        cap_ethertype = eth_info['Type Code']
+        sliced_ethertype = cap_ethertype[6:]
+        sliced_ethertype = '0x' + sliced_ethertype.upper()
+        print("SLICED ETHER", sliced_ethertype)
+        if sliced_ethertype in eth_type:
+            eth_info['Type Result'] = eth_type[sliced_ethertype]
+        else:
+            pass
         return eth_info
     except OSError as error:
         print("OS Error: {0}".format(error))
@@ -216,16 +229,33 @@ def parse_eth(packet):
 
 def parse_ip(packet, ip_version):
     try:
+        protocol_num = {
+            '4': 'IPv4 protocol recognised.',
+            '6': 'TCP protocol recognised.',
+            '17': 'UDP protocol recognised.',
+            '41': 'IPv6 protocol recognised.',
+        }
+
         if ip_version == 4:
             #print("\n---------IPv4 INFO ----------")
             ip_info = {
                 'Version': packet.ip.version, 'Header Length': packet.ip.hdr_len + " bytes", 'Type of Service': 'N/A',
                 'Total Length': packet.ip.len + " bytes", 'Identification': packet.ip.id, 'Protocol': packet.ip.layer_name.upper(),
                 'Flags': {'RB': packet.ip.flags_rb, 'D': packet.ip.flags_df, 'M': packet.ip.flags_mf},
-                'Fragment Offset': packet.ip.frag_offset, 'Time To Live': packet.ip.ttl, 'Protocol ID': packet.ip.proto.upper(),
+                'Fragment Offset': packet.ip.frag_offset, 'Time To Live': packet.ip.ttl, 'Protocol Number': packet.ip.proto.upper(),
                 'Header Checksum': packet.ip.checksum, 'Checksum Status': packet.ip.checksum_status,
                 'Source Address': packet.ip.src, 'Destination Address': packet.ip.dst
             }
+
+            # Check ip_info['Protocol Number'] against eth_type for a match
+            # If match, add 'english' of type code to eth_info
+            cap_proto_num = ip_info['Protocol Number']
+            print("PROTO NUM", cap_proto_num)
+            if cap_proto_num in protocol_num:
+                ip_info['Protocol Number Result'] = protocol_num[cap_proto_num]
+            else:
+                pass
+
             return ip_info
         elif ip_version == 6:
             #print("\n---------IPv6 INFO ----------")
@@ -337,19 +367,18 @@ def parse_icmp(packet):
         print("Unexpected Error", sys.exc_info()[0])
         raise
 
-'''
+
 def main(file):
     capture = pyshark.FileCapture(file)
     (eth_info, ip_info, table_info, tcp_info, udp_info) = packet_dump(capture)
     # TODO NEED TO RETURN MERGED LIST, TO BE USED TABLE INFO
     print("IN MAIN")
-    print(len(table_info))
-    print(table_info)
+    #print(len(table_info))
+    #print(table_info)
    # print(merged_list)
     
 
 if __name__== '__main__':
-    main(file="test_http.pcap")
-    '''
+    main(file="test_udp.pcap")
 
 

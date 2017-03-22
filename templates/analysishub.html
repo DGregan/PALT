@@ -57,12 +57,15 @@
                                         <p>Packet's Address: {{ value | safe }}</p>
                                         <br>
 
-                                    {% elif key == 'Type' %}
+                                    {% elif key == 'Type Code' %}
                                         <h5>What is the Type</h5>
                                         <p>A Type is...</p>
                                         <br>
                                         <p>Packet's Type: {{ value | safe }}</p>
                                         <br>
+
+                                    {% elif key == 'Type Result'%}
+                                        <p>{{ key | safe }}: {{ value | safe }}</p>
 
                                     {% else %}
                                         <p>Data not found</p>
@@ -144,14 +147,14 @@
                                     <p>Packet's ...: {{ value | safe }}</p>
                                     <br>
 
-                                 {% elif key == 'Protocol' %}
+                                 {% elif key == 'Protocol Number' %}
                                     <h5>What is the ...</h5>
                                     <p>A ... is...</p>
                                     <br>
                                     <p>Packet's ...: {{ value | safe }}</p>
                                     <br>
 
-                                 {% elif key == 'Protocol ID' %}
+                                 {% elif key == 'Protocol Number Result' %}
                                     <h5>What is the ...</h5>
                                     <p>A ... is...</p>
                                     <br>
@@ -440,7 +443,7 @@
 
         <br>
 
-
+        </div>
     </div><!-- container -->
 </main> <!-- cd-main-content -->
 
@@ -490,6 +493,15 @@ for (i = 0; i < acc.length; i++) {
     }
 }
 </script>
+
+<script>
+$(document).ready(function(){
+    $("#myBtn").click(function(){
+        $("#myModal").modal();
+    });
+});
+</script>
+
 <!--
 <script>
 $(document).ready(function () {
