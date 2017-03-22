@@ -13,7 +13,7 @@
                 <hr>
                 <h2>All Devices Found:</h2>
                 <hr>
-            </div>
+            </div> <!-- col-lg-12 -->
         </div> <!-- END ROW -->
         <br>
 
@@ -27,13 +27,13 @@
                     {% endfor %}
                         </ul>
                 </div> <!-- list-group -->
-            </div>
+            </div> <!-- col-md-6 col-md-6 -->
             <div class="col-md-6 col-md-6">
                 <h4>Information about Devices</h4>
                 <br>
                 <p>These devices are all network devices found on the machine.</p>
-            </div>
-        </div>
+            </div> <!-- col-md-6 col-md-6 -->
+        </div><!-- row -->
 
         <!-- Stack the columns on mobile by making one full-width and the other half-width -->
         <div class="row">
@@ -58,7 +58,8 @@
                         {% endfor %}
                     </select> <!-- select -->
                 <br>
-                 <input type="submit" class="btn btn-success" id="submitButton" role="button" value="Submit">
+                 <input type="submit" class="btn btn-success" id="submitButton" role="button" value="Submit"
+                 onclick="this.disabled='true';this.form.submit();this.value='Processing';">
                 </form><!-- form -->
                 <br><br><br>
             </div>

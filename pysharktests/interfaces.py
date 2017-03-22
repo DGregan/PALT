@@ -222,7 +222,7 @@ def parse_ip(packet, ip_version):
                 'Version': packet.ip.version, 'Header Length': packet.ip.hdr_len + " bytes", 'Type of Service': 'N/A',
                 'Total Length': packet.ip.len + " bytes", 'Identification': packet.ip.id, 'Protocol': packet.ip.layer_name.upper(),
                 'Flags': {'RB': packet.ip.flags_rb, 'D': packet.ip.flags_df, 'M': packet.ip.flags_mf},
-                'Fragment Offset': packet.ip.frag_offset, 'Time To Live': packet.ip.ttl, 'Protocol Number': packet.ip.proto.upper(),
+                'Fragment Offset': packet.ip.frag_offset, 'Time To Live': packet.ip.ttl, 'Protocol ID': packet.ip.proto.upper(),
                 'Header Checksum': packet.ip.checksum, 'Checksum Status': packet.ip.checksum_status,
                 'Source Address': packet.ip.src, 'Destination Address': packet.ip.dst
             }
