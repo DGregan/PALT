@@ -1,6 +1,25 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
 
 @import url('https://fonts.googleapis.com/css?family=Raleway');
+
+
+/* Set the fixed height of the footer here */
+#push, #footer {
+    height: 50px;
+}
+#footer {
+    background-color: #bebebe;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+    #footer {
+      margin-left: -20px;
+      margin-right: -20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+}
 button.accordion:after {
     content: '\02795'; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
@@ -101,6 +120,11 @@ thead {
 
 .intro-header {
     padding-top: 10px;
+    width:100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
 }
 
 hr {
@@ -144,9 +168,6 @@ hr {
 
 .img-center {
     margin: 0 auto;
-    height:200px;
-    width:200px;
-    position: absolute;
 }
 
 .panel-heading [data-toggle="collapse"].collapsed:after {

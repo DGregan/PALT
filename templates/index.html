@@ -4,66 +4,75 @@
 <body>
 {% include 'nav-static.html' %}
 
-<div class="intro-header">
-        <img class="img-responsive" src="{{ url_for('static', filename='img/indexbg.png') }}" alt="">
-</div>
-<main class="cd-main-content">
+
+<main class="cd-main-content" >
+    <div class="intro-header">
+            <img class="img-responsive" src="{{ url_for('static', filename='img/bg.png') }}" alt="">
+     </div>
     <div class="container">
-        <div class="col-lg-12">
-            <hr>
-            <h1 align="center">Packet Analyzing Learning Tool</h1>
-            <hr>
+        <div class="row">
+            <div class="col-lg-12">
+                <hr>
+                <h1 align="center">Packet Analyzing Learning Tool</h1>
+                <hr>
+            </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-12">
-                <h4>Overview</h4>
-
+            <div class="col-lg-8">
+                <h3>Overview</h3>
                 <br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut augue sit amet quam tempor bibendum.
-                    Phasellus elementum fringilla tempor. Nam eu faucibus odio. Pellentesque id massa cursus, dictum libero quis, finibus purus.
-                    Proin scelerisque nibh vitae nulla cursus egestas. Etiam dictum tempor sollicitudin. Sed dapibus mi nisl, venenatis tempor sapien eleifend ac.
-                </p>
                 <p>
-                    Cras blandit sed turpis sit amet sagittis. Quisque fermentum faucibus tellus vitae interdum.
-                    Donec vulputate, magna sed cursus bibendum, mi leo ullamcorper eros, nec elementum lorem ligula vel arcu.
-                    Aenean eget nibh vel turpis suscipit iaculis ac et nulla. Etiam fringilla dui est, nec sodales arcu sodales eget.
-                    Donec mattis, ex vel aliquam laoreet, justo nulla euismod nunc, et condimentum enim quam nec nulla.
-                    Suspendisse semper, mauris ut imperdiet pellentesque, justo urna imperdiet arcu, in bibendum libero orci non nisi.
-                    Vestibulum dictum gravida felis, et malesuada dolor rutrum quis. Vestibulum gravida turpis at cursus ultrices.
-                    Nunc vel consequat nisl. Nullam porta dolor vitae felis fringilla, in commodo lectus aliquam. Nam quam justo,
-                    venenatis eget mauris in, consequat finibus nulla.
-                    Vestibulum id augue nec lorem facilisis consequat. Donec vulputate et magna ac tincidunt. Donec et volutpat velit.
+                    Learning about Network Traffic for the first time can be a challenging experience for a
+                    Computer networking novice or student. Packet Analysing Learning Tool (PALT) will attempt to erode
+                    the arduous task of mastering the fundamentals of Networking Traffic.
+                </p>
+                <br>
+                <p>
+                    This will be accomplished by providing an environment where
+                    users can learn about network traffic through the capture of live traffic and the dissecting of
+                    packets travelling across the network. The captured network packets will then be inspected and return
+                    the analysed contents to the users.
                 </p>
             </div><!-- col-lg-12 -->
+            <div class="col-lg-4">
+                <h4>Created by</h4>
+                <p>testwstetest</p>
+            </div>
         </div><!-- row -->
 
         <br>
 
-        <div class="row">
-            <div class="col-lg-9">
-
-            </div>
-            <div class="col-lg-3">
-                <h4 align="right">How to get started</h4>
+        <div class="row" align="center">
+            <div class="col-md-4">
+                <a href="about">
+                    <img class="img-center img-responsive img-center" src="{{ url_for('static', filename='img/fadesktop.png') }}">
+                </a>
+                <h2>About Application</h2>
                 <hr>
+                <p>What the application was built with</p>
             </div>
-        </div>
-    </div>
+            <div class="col-md-4">
+                <a href="interfaces">
+                    <img class="img-center img-responsive img-center" src="{{ url_for('static', filename='img/fatable.png') }}">
+                </a>
+                <h2>Select Network Interface</h2>
+                <hr>
+                <p>Select a Network Interface Device to capture live traffic to be used in learning.</p>
+            </div>
+            <div class="col-md-4">
+                <a href="help">
+                    <img class="img-center img-responsive img-center" src="{{ url_for('static', filename='img/fabook.png') }}">
+                </a>
+                <h2>Learning Resources</h2>
+                <hr>
+                <p>Resources to assist in learning about Network Traffic.</p>
+            </div>
+        </div><!-- row -->
+        <br><br>
+    </div><!-- container -->
 </main> <!-- cd-main-content -->
-
-
-
-<!--
-    STRUCTURE
-        - Index
-            - Overview
-                - What this web app does
-                - Info returned??
--->
-
-
-<!-- Initalising js -->
+{% include 'footer.html' %}
 {% include 'js-static.html' %}
 </body>
 </html>
