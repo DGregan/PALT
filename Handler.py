@@ -192,6 +192,58 @@ class CaptureHandler:
             print("Unexpected Error", sys.exc_info()[0])
             raise
 
+    def parse_table(self, packet, ip_version):
+        try:
+            # TODO - ERROR CHECKING IF 'NONE' VALUES ARE CAUGHT
+            # print("\n---------TABLE INFO ----------")
+            if ip_version == 4:
+                if packet.transport_layer == 'TCP':
+                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    table_dict = {
+                        'Time': time_stamp, 'Source IP': packet.ip.src.upper(), 'Dest. IP': packet.ip.dst.upper(),
+                        'Protocol': packet.transport_layer,
+                        'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
+                        'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
+                    }
+                    return table_dict
+                elif packet.transport_layer == 'UDP':
+                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    if packet.udp.srcport == None:
+                        packet.udp.srcport = 'N/A'
+                    table_dict = {
+                        'Time': time_stamp, 'Source IP': packet.ip.src.upper(), 'Dest. IP': packet.ip.dst.upper(),
+                        'Protocol': packet.transport_layer,
+                        'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
+                        'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
+                    }
+                    return table_dict
+            elif ip_version == 6:
+                if packet.transport_layer == 'TCP':
+                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    table_dict = {
+                        'Time': time_stamp, 'Source IP': packet.ipv6.src.upper(), 'Dest. IP': packet.ipv6.dst.upper(),
+                        'Protocol': packet.transport_layer,
+                        'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
+                        'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
+                    }
+                    return table_dict
+                elif packet.transport_layer == 'UDP':
+                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    table_dict = {
+                        'Time': time_stamp, 'Source IP': packet.ipv6.src.upper(), 'Dest. IP': packet.ipv6.dst.upper(),
+                        'Protocol': packet.transport_layer,
+                        'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
+                        'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
+                    }
+                    return table_dict
+
+        except OSError as error:
+            print("OS Error: {0}".format(error))
+        except ValueError:
+            print("TABLE INFO CAPTURE ERROR")
+        except:
+            print("Unexpected Error", sys.exc_info()[0])
+            raise
 
     def parse_ip(self, packet, ip_version):
         '''
