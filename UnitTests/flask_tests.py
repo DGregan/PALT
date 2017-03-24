@@ -1,7 +1,7 @@
 from flask import Flask
-import fypFlask
+import paltFlask
 import unittest
-from fypFlask import app
+from paltFlask import app
 from flask_testing import TestCase, LiveServerTestCase
 import urllib2
 
