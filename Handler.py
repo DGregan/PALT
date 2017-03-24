@@ -92,61 +92,49 @@ class CaptureHandler:
             elif layer._layer_name == 'ipv6':
                 return 6
 
-    def packet_dump(self, capture):
-        '''
-
-        :param capture:
-        :return:
-        '''
+    def packet_dissector(self, capture):
         try:
+            # Create multiple lists
             all_ip, all_eth, all_table, all_tcp, all_udp, all_http = ([] for i in range(6))
             for packet in capture:
                 eth_info = self.parse_eth(packet)
                 all_eth.append(eth_info)
-                print(eth_info)
                 ip_version = self.get_ip_version(packet)
                 if ip_version == 4:
                     ip_info = self.parse_ip(packet, ip_version)
                     all_ip.append(ip_info)
                     table_info = (self.parse_table(packet, ip_version))
                     all_table.append(table_info)
-                    print(ip_info)
-                    print(table_info)
-                    #icmp_info = parse_icmp(packet)
-                    #print(icmp_info)
 
                 elif ip_version == 6:
                     ip_info = self.parse_ip(packet, ip_version)
                     all_ip.append(ip_info)
                     table_info = (self.parse_table(packet, ip_version))
                     all_table.append(table_info)
+                else:
+                    print("UNKNOWN IP VERSION FOUND:", ip_version)
 
                 if packet.transport_layer == 'TCP':
                     tcp_info = self.parse_tcp(packet)
                     all_tcp.append(tcp_info)
-                    print(tcp_info)
                     if packet.highest_layer == 'HTTP':
                         http_info = self.parse_http(packet)
                         all_http.append(http_info)
                         return all_eth, all_ip, all_table, all_tcp, all_udp, all_http
+                    else:
+                        print("UNKNOWN APPLICATION LAYER FOUND:", packet.highest_layer)
 
                 elif packet.transport_layer == 'UDP':
                     udp_info = self.parse_udp(packet)
-                    print(udp_info)
                     all_udp.append(udp_info)
                     if packet.highest_layer == 'HTTP':
                         http_info = self.parse_http(packet)
                         all_http.append(http_info)
                         return all_eth, all_ip, all_table, all_tcp, all_udp, all_http
-
-                '''
-                elif packet.transport_layer == None:
-                    table_info = parse_table(packet, ip_version)
-                    #print('Transport Layer = None')
-                    #print(table_info)
-                #print("\n***************  ***************")
-                '''
-
+                    else:
+                        print("UNKNOWN APPLICATION LAYER FOUND:", packet.highest_layer)
+                else:
+                    print("UNKNOWN TRANSPORT LAYER FOUND:", packet.transport_layer)
             return all_eth, all_ip, all_table, all_tcp, all_udp
 
         except OSError as error:
@@ -194,8 +182,6 @@ class CaptureHandler:
 
     def parse_table(self, packet, ip_version):
         try:
-            # TODO - ERROR CHECKING IF 'NONE' VALUES ARE CAUGHT
-            # print("\n---------TABLE INFO ----------")
             if ip_version == 4:
                 if packet.transport_layer == 'TCP':
                     time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -270,7 +256,7 @@ class CaptureHandler:
                 if cap_proto_num in self.protocol_num:
                     ip_info['Protocol Number Result'] = self.protocol_num[cap_proto_num]
                 else:
-                    pass
+                    ip_info['Protocol Number Result'] = "Unknown Protocol Number Found."
 
                 return ip_info
             elif ip_version == 6:
@@ -288,6 +274,9 @@ class CaptureHandler:
                     'Destination Address': packet.ipv6.dst.upper()
                 }
                 return ip_info
+            else:
+                print("UNKNOWN IP VERSION FOUND")
+                raise
         except OSError as error:
             print("OS Error: {0}".format(error))
         except ValueError:
@@ -325,7 +314,6 @@ class CaptureHandler:
             print("Unexpected Error", sys.exc_info()[0])
             raise
 
-
     def parse_udp(self, packet):
         '''
 
@@ -333,6 +321,10 @@ class CaptureHandler:
         :return:
         '''
         try:
+            if packet.udp.srcport is None:
+                packet.udp.srcport = "N/A"
+            if packet.udp.dstport is None:
+                packet.udp.dstport = "N/A"
             udp_info = {
                 'Source Port': packet.udp.srcport,
                 'Dest. Port': packet.udp.dstport,
@@ -394,12 +386,12 @@ class CaptureHandler:
             print("Unexpected Error", sys.exc_info()[0])
             raise
 
-
+'''
 def main(file):
     dh = DeviceHandler()
     ch = CaptureHandler()
     capture = pyshark.FileCapture(file)
-    (eth_info, ip_info, table_info, tcp_info, udp_info) = ch.packet_dump(capture)
+    (eth_info, ip_info, table_info, tcp_info, udp_info) = ch.packet_dissector(capture)
     # TODO NEED TO RETURN MERGED LIST, TO BE USED TABLE INFO
     print("IN MAIN")
 
@@ -415,4 +407,4 @@ def main(file):
 if __name__== '__main__':
     main(file="test_tcp_connection_end.cap")
 
-
+'''
