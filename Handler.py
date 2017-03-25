@@ -48,7 +48,7 @@ class DeviceHandler:
         except OSError as error:
             print("OS Error: {0}".format(error))
         except ValueError:
-            print("TABLE INFO CAPTURE ERROR")
+            print("GET_DEVICES CAPTURE ERROR")
         except:
             print("Unexpected Error", sys.exc_info()[0])
             raise
@@ -86,11 +86,21 @@ class CaptureHandler:
         :param packet:
         :return:
         '''
-        for layer in packet.layers:
-            if layer._layer_name == 'ip':
-                return 4
-            elif layer._layer_name == 'ipv6':
-                return 6
+        try:
+            for layer in packet.layers:
+                if layer._layer_name == 'ip':
+                    return 4
+                elif layer._layer_name == 'ipv6':
+                    return 6
+                else:
+                    print("UNKNOWN PACKET VERSION FOUND", layer._layer_name)
+        except OSError as error:
+            print("OS Error: {0}".format(error))
+        except ValueError as error:
+            print("GET_IP_VERSION ERROR FOUND:", error)
+        except:
+            print("Unexpected Error", sys.exc_info()[0])
+            raise
 
     def packet_dissector(self, capture):
         try:
@@ -139,8 +149,8 @@ class CaptureHandler:
 
         except OSError as error:
             print("OS Error: {0}".format(error))
-        except ValueError:
-            print("TABLE INFO CAPTURE ERROR")
+        except ValueError as error:
+            print("PACKET DISSECTOR ERROR FOUND:", error)
         except:
             print("Unexpected Error", sys.exc_info()[0])
             raise
@@ -203,6 +213,9 @@ class CaptureHandler:
                         'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                     }
                     return table_dict
+                else:
+                    print("PARSE_TABLE: UNKNOWN TRANSPORT LAYER FOUND", packet.transport_layer)
+
             elif ip_version == 6:
                 if packet.transport_layer == 'TCP':
                     time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -222,11 +235,13 @@ class CaptureHandler:
                         'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                     }
                     return table_dict
+                else:
+                    print("PARSE_TABLE: UNKNOWN TRANSPORT LAYER FOUND", packet.transport_layer)
 
         except OSError as error:
             print("OS Error: {0}".format(error))
-        except ValueError:
-            print("TABLE INFO CAPTURE ERROR")
+        except ValueError as error:
+            print("TABLE INFO CAPTURE ERROR FOUND:", error)
         except:
             print("Unexpected Error", sys.exc_info()[0])
             raise
@@ -249,7 +264,6 @@ class CaptureHandler:
                     'Header Checksum': packet.ip.checksum, 'Checksum Status': packet.ip.checksum_status,
                     'Source Address': packet.ip.src, 'Destination Address': packet.ip.dst
                 }
-
                 # Check ip_info['Protocol Number'] against eth_type for a match
                 # If match, add 'english' of type code to eth_info
                 cap_proto_num = ip_info['Protocol Number']
@@ -276,11 +290,10 @@ class CaptureHandler:
                 return ip_info
             else:
                 print("UNKNOWN IP VERSION FOUND")
-                raise
         except OSError as error:
             print("OS Error: {0}".format(error))
-        except ValueError:
-            print("IPV4/6 CAPTURE ERROR")
+        except ValueError as error:
+            print("IPV4/6 CAPTURE ERROR:", error)
         except:
             print("Unexpected Error", sys.exc_info()[0])
             raise
@@ -303,13 +316,12 @@ class CaptureHandler:
                         'Checksum': packet.tcp.checksum, 'Checksum Status': packet.tcp.checksum_status,
                         'Urgent Pointer': packet.tcp.urgent_pointer
                         #, 'Segment Data': packet.tcp.segment_data
-                        }  # tcp_dict
-
+                        }  
             return tcp_info
         except OSError as error:
             print("OS Error: {0}".format(error))
-        except ValueError:
-            print("TCP CAPTURE ERROR")
+        except ValueError as error:
+            print("TCP CAPTURE ERROR", error)
         except:
             print("Unexpected Error", sys.exc_info()[0])
             raise
@@ -336,8 +348,8 @@ class CaptureHandler:
             return udp_info
         except OSError as error:
             print("OS Error: {0}".format(error))
-        except ValueError:
-            print("UDP CAPTURE ERROR")
+        except ValueError as error:
+            print("UDP CAPTURE ERROR", error)
         except:
             print("Unexpected Error", sys.exc_info()[0])
             raise
@@ -359,8 +371,8 @@ class CaptureHandler:
             return http_info
         except OSError as error:
             print("OS Error: {0}".format(error))
-        except ValueError:
-            print("HTTP CAPTURE ERROR")
+        except ValueError as error:
+            print("HTTP CAPTURE ERROR", error)
         except:
             print("Unexpected Error", sys.exc_info()[0])
             raise
