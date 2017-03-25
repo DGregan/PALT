@@ -9,10 +9,16 @@
         <br><br>
         <div class="row">
                 <div class="col-lg-12">
-                    <h1>How to get Started</h1>
+                    <h1>Analysis Hub</h1>
                     <hr>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean in sapien pharetra, tempor justo id,
+                        The Analysis Hub is where all of the captured network traffic from chosen capture device will be displayed here.
+                    </p>
+                    <p>
+                            <strong>Chosen Captured Device:{{ capture_device | safe }}</strong>
+                    </p>
+                    <p>
+                        Stuff goes here
                     </p>
                 </div> <!-- col-lg-12 -->
         </div><!-- row -->
@@ -21,7 +27,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h1>Packet Capture Summary</h1>
+                <h1><i class="fa fa-newspaper-o"></i> Packet Capture Summary</h1>
                 <hr>
                 <p>This area displays a summary of the capture packets from the chosen network device.</p>
 
@@ -82,7 +88,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h2>Download Summary</h2>
+                <h2><i class="fa fa-download"></i> Download Summary</h2>
                 <hr>
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default">Download Summary (CSV)</button>
@@ -96,8 +102,9 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h2>Packet Capture Contents</h2>
+                <h2><i class="fa fa-object-group"></i> Packet Capture Contents</h2>
                 <hr>
+
                 <br>
                     {% if eth_info != [] %}
                     <!--       eth ACCORDION BUTTON         -->
@@ -105,6 +112,7 @@
                         <div class="panel">
                         <h4>--Ethernet--</h4>
                         <p>Ethernet is blah blah blah</p>
+
                             {% for dict_item in eth_info %}
                                 <h3>{{ loop.index }}</h3>
                                 <br>
