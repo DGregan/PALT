@@ -121,8 +121,6 @@ class CaptureHandler:
                     all_ip.append(ip_info)
                     table_info = (self.parse_table(packet, ip_version))
                     all_table.append(table_info)
-                else:
-                    print("UNKNOWN IP VERSION FOUND:", ip_version)
 
                 if packet.transport_layer == 'TCP':
                     tcp_info = self.parse_tcp(packet)
@@ -131,8 +129,6 @@ class CaptureHandler:
                         http_info = self.parse_http(packet)
                         all_http.append(http_info)
                         return all_eth, all_ip, all_table, all_tcp, all_udp, all_http
-                    else:
-                        print("UNKNOWN APPLICATION LAYER FOUND:", packet.highest_layer)
 
                 elif packet.transport_layer == 'UDP':
                     udp_info = self.parse_udp(packet)
@@ -141,10 +137,6 @@ class CaptureHandler:
                         http_info = self.parse_http(packet)
                         all_http.append(http_info)
                         return all_eth, all_ip, all_table, all_tcp, all_udp, all_http
-                    else:
-                        print("UNKNOWN APPLICATION LAYER FOUND:", packet.highest_layer)
-                else:
-                    print("UNKNOWN TRANSPORT LAYER FOUND:", packet.transport_layer)
             return all_eth, all_ip, all_table, all_tcp, all_udp
 
         except OSError as error:
@@ -333,7 +325,7 @@ class CaptureHandler:
         :return:
         '''
         try:
-            if packet.udp.srcport is None:
+            if packet.udp.srcport is None or packet.udp.srcport == 0:
                 packet.udp.srcport = "N/A"
             if packet.udp.dstport is None:
                 packet.udp.dstport = "N/A"
