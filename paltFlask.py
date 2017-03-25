@@ -1,5 +1,6 @@
 import pandas as pd
 import pyshark
+import time
 from flask import Flask, render_template, redirect, request, url_for, make_response
 from Handler import DeviceHandler, CaptureHandler
 
@@ -19,8 +20,6 @@ def index():
 
 @app.route('/about')
 def about():
-    app.logger.log()
-    app.logger.info("RENDERING: About Template")
     return render_template("about.html")
 
 
@@ -40,18 +39,35 @@ def analysishub():
     capture_device = dh.selected_device(dev)
 
     capture = pyshark.LiveCapture(capture_device)
-    capture.sniff(packet_count=50, timeout=100)
-    eth_info, ip_info, table, tcp_info, udp_info = ch.packet_dump(capture)
-    pandas_web = pd.DataFrame(table, columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
-                                              'Source Port', 'Dest. Port'])\
-        .to_html(classes=['table table-bordered table-hover table-striped'], header=True, index=True)
+    capture.sniff(packet_count=30, timeout=100)
+    eth_info, ip_info, table, tcp_info, udp_info = ch.packet_dissector(capture)
+    time.sleep(5)
+    pandas_web_base = pd.DataFrame(table,
+                                   columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
+                                            'Source Port', 'Dest. Port'])
+
+    pandas_web = pandas_web_base.to_html(classes=['table table-bordered table-hover table-striped'], header=True,
+                                         index=True)
+    # pandas_web_base.to_csv()
+    download_csv(pandas_web_base)
+    # pandas_web_base.to_json()
+    # pandas_web_base.to_excel()
+
     return render_template("analysishub.html", pandas_web=pandas_web, ip_info=ip_info, eth_info=eth_info,
-                           tcp_info=tcp_info, udp_info=udp_info)
+                           tcp_info=tcp_info, udp_info=udp_info, pandas_web_base=pandas_web_base, capture_device=capture_device)
 
 
-@app.route('/help')
+@app.route('/analysishub/')
+def download_csv(pandas_web_base):
+    response = make_response(pandas_web_base.to_csv())
+    response.headers["Content-Disposition"] = "attachment; filename=test.csv"
+    response.headers["Content-Type"] = "text/csv"
+    return response
+
+
+@app.route('/resources')
 def help():
-    return render_template("help.html")
+    return render_template("resources.html")
 
 
 @app.errorhandler(400)
