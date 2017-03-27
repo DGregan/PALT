@@ -108,7 +108,7 @@
                 <br>
                     {% if eth_info != [] %}
                     <!--       eth ACCORDION BUTTON         -->
-                        <button class="accordion">ETH INFO</button>
+                        <button class="accordion">Captured Ethernet Header Information</button>
                         <div class="panel">
                         <h4>--Ethernet--</h4>
                         <p>Ethernet is blah blah blah</p>
@@ -126,7 +126,7 @@
 
                                             <p>PROTOCOL TEST</p>
 
-                                        {% elif key == 'Destination Address' %}
+                                        {% elif key == 'Destination MAC Address' %}
                                             <h5>What is the Destination Address?</h5>
                                             <hr>
                                             <p>A destination address is...</p>
@@ -134,18 +134,11 @@
                                             <p>Packet's Destination Address: {{ value | safe }}</p>
                                             <br>
 
-                                        {% elif key == 'Source Address' %}
+                                        {% elif key == 'Source MAC Address' %}
                                             <h5>What is the Source Address?</h5>
                                             <p>A source address is...</p>
                                             <br>
                                             <p>Packet's Source Address: {{ value | safe }}</p>
-                                            <br>
-
-                                        {% elif key == 'Address' %}
-                                            <h5>What is the Address?</h5>
-                                            <p>An address is...</p>
-                                            <br>
-                                            <p>Packet's Address: {{ value | safe }}</p>
                                             <br>
 
                                         {% elif key == 'Type Code' %}
@@ -171,7 +164,7 @@
 
                     {% if ip_info != [] %}
                     <!--       IP ACCORDION BUTTON         -->
-                        <button class="accordion">IP INFO</button>
+                        <button class="accordion">Captured IP Header Information</button>
                         <div class="panel">
                         <br>
                         <h4>IP Information</h4>
@@ -358,7 +351,7 @@
 
                     <!--       TCP ACCORDION BUTTON         -->
                     {% if tcp_info != [] %}
-                        <button class="accordion">TCP HEADER INFO</button>
+                        <button class="accordion">Captured TCP Header Information</button>
                         <div class="panel">
                         <br>
                             {% for dict_item in tcp_info %}
@@ -454,7 +447,7 @@
 
                     {% if udp_info != [] %}
                         <!--        UDP ACCORDION BUTTON         -->
-                        <button class="accordion">UDP HEADER INFO</button>
+                        <button class="accordion">Captured UDP Header Information</button>
                         <div class="panel">
                             {% for dict_item in udp_info %}
                                     {{ loop.index }}

@@ -38,11 +38,14 @@ class DeviceHandler:
         '''
         try:
             tsharkCall = '"' +os.environ["ProgramFiles"]+'/Wireshark/tshark.exe"' +" -D "+os.getcwd()
-            proc = check_output(tsharkCall, shell=True)  # Note tshark must be in $PATH
-            decoded = proc.decode('ascii')
-            interfaces = decoded.splitlines()
-            #for interface in interfaces:
-             #   print(interface)
+            proc = check_output(tsharkCall, shell=True)
+            decoded = proc.decode('ascii')  # Decoded Example: 1. {DEVICE\123} ('LAN') 2. {DEVICE\124} ('WiFi')
+            interfaces = decoded.splitlines()  # Splits Interfaces into seperate lines
+            if len(interfaces) >=1:
+                for interface in interfaces:
+                    print(interface)
+            else:
+                interfaces = "No Interfaces Found"
             return interfaces
 
         except OSError as error:
@@ -92,8 +95,6 @@ class CaptureHandler:
                     return 4
                 elif layer._layer_name == 'ipv6':
                     return 6
-                else:
-                    print("UNKNOWN PACKET VERSION FOUND", layer._layer_name)
         except OSError as error:
             print("OS Error: {0}".format(error))
         except ValueError as error:
@@ -154,16 +155,12 @@ class CaptureHandler:
         :return:
         '''
         try:
-
             eth_info = {
-                'Address': packet.eth.addr.upper(),
-                'Source Address': packet.eth.src.upper(),
-                'Destination Address': packet.eth.dst.upper(),
+                'Source MAC Address': packet.eth.src.upper(),
+                'Destination MAC Address': packet.eth.dst.upper(),
                 'Protocol': packet.eth.layer_name.upper(),
-                #'Padding': packet.eth.padding,
                 'Type Code': packet.eth.type
             }
-
             # Check eth_info['Type Code'] against eth_type for a match
             # If match, add 'english' of type code to eth_info
             cap_ethertype = eth_info['Type Code']
@@ -190,18 +187,18 @@ class CaptureHandler:
                     table_dict = {
                         'Time': time_stamp, 'Source IP': packet.ip.src.upper(), 'Dest. IP': packet.ip.dst.upper(),
                         'Protocol': packet.transport_layer,
-                        'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
+                        'Source MAC Address': packet.eth.src.upper(), 'Destination MAC Address': packet.eth.dst.upper(),
                         'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
                     }
                     return table_dict
                 elif packet.transport_layer == 'UDP':
                     time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    if packet.udp.srcport == None:
+                    if packet.udp.srcport is None or packet.udp.srcport == 0:
                         packet.udp.srcport = 'N/A'
                     table_dict = {
                         'Time': time_stamp, 'Source IP': packet.ip.src.upper(), 'Dest. IP': packet.ip.dst.upper(),
                         'Protocol': packet.transport_layer,
-                        'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
+                        'Source MAC Address': packet.eth.src.upper(), 'Destination MAC Address': packet.eth.dst.upper(),
                         'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                     }
                     return table_dict
@@ -214,7 +211,7 @@ class CaptureHandler:
                     table_dict = {
                         'Time': time_stamp, 'Source IP': packet.ipv6.src.upper(), 'Dest. IP': packet.ipv6.dst.upper(),
                         'Protocol': packet.transport_layer,
-                        'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
+                        'Source MAC Address': packet.eth.src.upper(), 'Destination MAC Address': packet.eth.dst.upper(),
                         'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
                     }
                     return table_dict
@@ -223,7 +220,7 @@ class CaptureHandler:
                     table_dict = {
                         'Time': time_stamp, 'Source IP': packet.ipv6.src.upper(), 'Dest. IP': packet.ipv6.dst.upper(),
                         'Protocol': packet.transport_layer,
-                        'Source MAC': packet.eth.src.upper(), 'Dest. MAC': packet.eth.dst.upper(),
+                        'Source MAC Address': packet.eth.src.upper(), 'Destination MAC Address': packet.eth.dst.upper(),
                         'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
                     }
                     return table_dict
@@ -390,25 +387,27 @@ class CaptureHandler:
             print("Unexpected Error", sys.exc_info()[0])
             raise
 
-'''
-def main(file):
-    dh = DeviceHandler()
-    ch = CaptureHandler()
-    capture = pyshark.FileCapture(file)
-    (eth_info, ip_info, table_info, tcp_info, udp_info) = ch.packet_dissector(capture)
-    # TODO NEED TO RETURN MERGED LIST, TO BE USED TABLE INFO
-    print("IN MAIN")
 
-    print("-------TCP-------")
-    print(tcp_info)
 
-    #print(http_info)
-    #print(len(table_info))
-    #print(table_info)
-   # print(merged_list)
-    
+    '''
+    def main(file):
+        dh = DeviceHandler()
+        ch = CaptureHandler()
+        capture = pyshark.FileCapture(file)
+        (eth_info, ip_info, table_info, tcp_info, udp_info, http_info) = ch.packet_dissector(capture)
+        # TODO NEED TO RETURN MERGED LIST, TO BE USED TABLE INFO
+        print("IN MAIN")
 
-if __name__== '__main__':
-    main(file="test_tcp_connection_end.cap")
+        print("-------TCP-------")
+        print(http_info)
 
-'''
+        #print(http_info)
+        #print(len(table_info))
+        #print(table_info)
+       # print(merged_list)
+
+
+    if __name__== '__main__':
+        main(file="test_http.pcap")
+
+    '''

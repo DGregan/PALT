@@ -43,7 +43,8 @@ def analysishub():
     eth_info, ip_info, table, tcp_info, udp_info = ch.packet_dissector(capture)
     time.sleep(5)
     pandas_web_base = pd.DataFrame(table,
-                                   columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC', 'Dest. MAC',
+                                   columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC Address',
+                                            'Destination MAC Address',
                                             'Source Port', 'Dest. Port'])
 
     pandas_web = pandas_web_base.to_html(classes=['table table-bordered table-hover table-striped'], header=True,
