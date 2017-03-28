@@ -156,10 +156,13 @@ class CaptureHandler:
         '''
         try:
             eth_info = {
+                # Preamble
                 'Source MAC Address': packet.eth.src.upper(),
                 'Destination MAC Address': packet.eth.dst.upper(),
                 'Protocol': packet.eth.layer_name.upper(),
                 'Type Code': packet.eth.type
+                # Data Payload
+                #'CRC': packet.eth.fcs  # Frame Check Sequence
             }
             # Check eth_info['Type Code'] against eth_type for a match
             # If match, add 'english' of type code to eth_info

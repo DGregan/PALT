@@ -46,7 +46,6 @@ def analysishub():
                                    columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC Address',
                                             'Destination MAC Address',
                                             'Source Port', 'Dest. Port'])
-
     pandas_web = pandas_web_base.to_html(classes=['table table-bordered table-hover table-striped'], header=True,
                                          index=True)
     # pandas_web_base.to_csv()
@@ -55,7 +54,7 @@ def analysishub():
     # pandas_web_base.to_excel()
 
     return render_template("analysishub.html", pandas_web=pandas_web, ip_info=ip_info, eth_info=eth_info,
-                           tcp_info=tcp_info, udp_info=udp_info, pandas_web_base=pandas_web_base, capture_device=capture_device)
+                           tcp_info=tcp_info, udp_info=udp_info, pandas_web_base=pandas_web_base, dev=dev)
 
 
 @app.route('/analysishub/')

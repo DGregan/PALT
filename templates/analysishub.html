@@ -12,13 +12,11 @@
                     <h1><i class="fa fa-cogs"></i> Analysis Hub</h1>
                     <hr>
                     <p>
-                        The Analysis Hub is where all of the captured network traffic from chosen capture device will be displayed here.
+                        The Analysis Hub is where all of the captured network traffic from chosen capture device will be displayed.
                     </p>
-                    <p class="font-weight-bold">
-                            Chosen Captured Device:{{ capture_device | safe }}
-                    </p>
+                    <br>
                     <p>
-                        Stuff goes here
+                           <strong>Chosen Captured Device:</strong> {{ dev | safe }}
                     </p>
                 </div> <!-- col-lg-12 -->
         </div><!-- row -->
@@ -27,7 +25,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h1><i class="fa fa-newspaper-o"></i> Packet Capture Summary</h1>
+                <h1><i class="fa fa-newspaper-o"></i> Packet Capture Summary Details</h1>
                 <hr>
                 <p>This area displays a summary of the capture packets from the chosen network device:</p>
 
@@ -44,9 +42,14 @@
                     <a href="#" class="list-group-item">
                         <h4 class="list-group-item-heading">Source/Destination IP Address</h4>
                         <p class="list-group-item-text">
-                            <strong>Source IP Address</strong>: P
+                            An IP Address is an identifier assigned to each device connected to
+                            a network in order to locate it.
                             <br>
-                            <strong>Destination IP Address</strong>:
+                            <strong>Source IP Address</strong>: The Source IP Address is the 'home address' of the device
+                            on the network.
+                            <br>
+                            <strong>Destination IP Address</strong>: The Destination IP Address is the address where the
+                            network data is to be sent to.
                         </p>
                     </a>
                     <a href="#" class="list-group-item">
@@ -57,14 +60,20 @@
                             <br>
                             There are two possible Transport Protocols:
                             <br>
-                            <strong>TCP</strong>:
+                            <strong>TCP</strong> (Transmission Control Protocol):
+                             Is a protocol that provides reliable, ordered, error checked delivery of data through streams between
+                            applications running on hosts/devices on an IP network.
                             <br>
-                            <strong>UDP</strong>:
+                            <strong>UDP</strong> (User Datagram Protocol):
+                            This protocol
+	                        uses a simple connectionless transmission model for streaming of data.
+                            Provides checksum for data integirty, port numbers
                         </p>
                     </a>
                     <a href="#" class="list-group-item">
                         <h4 class="list-group-item-heading">Source/Destination Ports</h4>
                         <p class="list-group-item-text">
+
                             <strong>Source Port</strong>: Port from where the network traffic was sent
                             <br>
                             <strong>Destination Port</strong>: Port that will receive the network traffic
@@ -73,8 +82,11 @@
                     <a href="#" class="list-group-item">
                         <h4 class="list-group-item-heading">Source/Destination MAC Address</h4>
                         <p class="list-group-item-text">
-                            MAC (Media Access Control) address is a unique 'physical'
-                            hardware address (48 bits in length)
+                            Network cards each have a unique 'physical' MAC address.
+                            Packets that are sent on the ethernet are always coming from a source MAC address and sent to
+                            a destination MAC address. If a network adapter is receiving a packet, it is comparing the packet’s
+                            destination MAC address to the adapter’s own MAC address.
+                            If the addresses match, the packet is processed, otherwise it is discarded.
                         </p>
                     </a>
                 </div><!-- list-groip -->
@@ -102,7 +114,6 @@
                 <hr>
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default">Download Summary (CSV)</button>
-                    <button type="button" class="btn btn-default">Download Summary (Excel)</button>
                 </div><!-- btn group -->
             </div> <!-- col-lg-12 -->
         </div><!-- row -->
@@ -160,6 +171,13 @@
 
                                         {% elif key == 'Type Result'%}
                                             <p>{{ key | safe }}: {{ value | safe }}</p>
+
+                                        {% elif key == 'CRC' %}
+                                        <h5>What is the CRC</h5>
+                                        <p>A Type is...</p>
+                                        <br>
+                                        <p>Packet's Type: {{ value | safe }}</p>
+                                        <br>
 
                                         {% else %}
                                             <p>Data not found</p>
