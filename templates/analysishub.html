@@ -9,13 +9,13 @@
         <br><br>
         <div class="row">
                 <div class="col-lg-12">
-                    <h1>Analysis Hub</h1>
+                    <h1><i class="fa fa-cogs"></i> Analysis Hub</h1>
                     <hr>
                     <p>
                         The Analysis Hub is where all of the captured network traffic from chosen capture device will be displayed here.
                     </p>
-                    <p>
-                            <strong>Chosen Captured Device:{{ capture_device | safe }}</strong>
+                    <p class="font-weight-bold">
+                            Chosen Captured Device:{{ capture_device | safe }}
                     </p>
                     <p>
                         Stuff goes here
@@ -29,15 +29,16 @@
             <div class="col-lg-12">
                 <h1><i class="fa fa-newspaper-o"></i> Packet Capture Summary</h1>
                 <hr>
-                <p>This area displays a summary of the capture packets from the chosen network device.</p>
+                <p>This area displays a summary of the capture packets from the chosen network device:</p>
 
                 <br>
                 <br>
                 <div class="list-group">
                     <a href="#" class="list-group-item">
                         <h4 class="list-group-item-heading">Time of Capture</h4>
-                        <p class="list-group-item-text">The Time of capture refers to the second a packet was captured
-                        from the network device. Displayed in the format (YYYY-MM-DD HH:MM:SS)
+                        <p class="list-group-item-text">
+                            The Time of capture refers to the second a packet was captured
+                            from the network device. Displayed in the format (YYYY-MM-DD HH:MM:SS)
                         </p>
                     </a>
                     <a href="#" class="list-group-item">
@@ -50,8 +51,15 @@
                     </a>
                     <a href="#" class="list-group-item">
                         <h4 class="list-group-item-heading">Protocol</h4>
-                        <p class="list-group-item-text">The protocol column of the Packet Capture Summary refers to the
-                        Transport Layer Protocol used to assist in getting the packet across a network
+                        <p class="list-group-item-text">
+                            The protocol column of the Packet Capture Summary refers to the
+                            Transport Layer Protocol used to assist in getting the packet across a network.
+                            <br>
+                            There are two possible Transport Protocols:
+                            <br>
+                            <strong>TCP</strong>:
+                            <br>
+                            <strong>UDP</strong>:
                         </p>
                     </a>
                     <a href="#" class="list-group-item">
@@ -64,8 +72,10 @@
                     </a>
                     <a href="#" class="list-group-item">
                         <h4 class="list-group-item-heading">Source/Destination MAC Address</h4>
-                        <p class="list-group-item-text">MAC (Media Access Control) address is a unique 'physical'
-                            hardware address (48 bits in length)</p>
+                        <p class="list-group-item-text">
+                            MAC (Media Access Control) address is a unique 'physical'
+                            hardware address (48 bits in length)
+                        </p>
                     </a>
                 </div><!-- list-groip -->
                 <hr>
@@ -366,13 +376,7 @@
                                             <p>Packet's ...: {{ value | safe }}</p>
                                             <br>
 
-                                        {% elif key == 'Destination Port' %}
-                                                <h5>What is the ...</h5>
-                                                <p>A ... is...</p>
-                                                <br>
-                                                <p>Packet's ...: {{ value | safe }}</p>
-                                                <br>
-                                        {% elif key == 'Destination Port' %}
+                                        {% elif key == 'Dest. Port' %}
                                                 <h5>What is the ...</h5>
                                                 <p>A ... is...</p>
                                                 <br>
