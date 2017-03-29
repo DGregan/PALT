@@ -94,6 +94,9 @@ div.inner-panel {
     background-color: white;
     display: none;
 }
+div.inner-panel.h4 {
+
+}
 
 button.inner-accordion.active:after {
     content: "\2796"; /* Unicode character for "minus" sign (-) */
@@ -600,7 +603,7 @@ ul.a {
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
     right: 1em;
-    background: url("../img/cd-arrow.svg") no-repeat center center;
+
     background-size: 8px 11px;
     -webkit-transition-property: -webkit-transform;
     -moz-transition-property: -moz-transform;
@@ -633,7 +636,7 @@ ul.a {
     width: 32px;
     float: left;
     padding: 0;
-    background-image: url("../img/cd-socials.svg");
+
     background-repeat: no-repeat;
     background-size: 128px 64px;
     background-color: #FFF;

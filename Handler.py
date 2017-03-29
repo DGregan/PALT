@@ -170,9 +170,9 @@ class CaptureHandler:
             sliced_ethertype = cap_ethertype[6:]  # Checks last set of digits
             sliced_ethertype = '0x' + sliced_ethertype.upper()
             if sliced_ethertype in self.ether_type:
-                eth_info['Type Result'] = self.ether_type[sliced_ethertype]
+                eth_info['Type Code'] = eth_info['Type Code'] + " ->" + self.ether_type[sliced_ethertype]
             else:
-                eth_info['Type Result'] = "Unknown Ethertype Found. " + sliced_ethertype
+                eth_info['Type Code'] = eth_info['Type Code'] + " Unknown Ethertype Found."
             return eth_info
         except OSError as error:
             print("OS Error: {0}".format(error))
@@ -260,9 +260,9 @@ class CaptureHandler:
                 # If match, add 'plain english' of type code to eth_info
                 cap_proto_num = ip_info['Protocol Number']
                 if cap_proto_num in self.protocol_num:
-                    ip_info['Protocol Number Result'] = self.protocol_num[cap_proto_num]
+                    ip_info['Protocol Number'] = ip_info['Protocol Number'] + " -> " + self.protocol_num[cap_proto_num]
                 else:
-                    ip_info['Protocol Number Result'] = "Unknown Protocol Number Found. " + cap_proto_num
+                    ip_info['Protocol Number'] = ip_info['Protocol Number'] + " Unknown Protocol Number Found. "
 
                 return ip_info
             elif ip_version == 6:
