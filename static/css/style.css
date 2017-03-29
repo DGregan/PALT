@@ -263,10 +263,10 @@ Main components
     /* set a min-height and a z-index to be sure that the main element completely covers the lateral menu */
 
     min-height: 100%;
-    position: relative;
+
     background-color: white;
     padding-top: 30px;
-    z-index: 2;
+
 
     /* Force Hardware Acceleration in WebKit */
 
