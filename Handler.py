@@ -60,6 +60,7 @@ class DeviceHandler:
 class CaptureHandler:
     def __init__(self):
         self.protocol_num = {
+                '1': 'ICMPv4 protocol recognised',
                 '4': 'IPv4 protocol recognised.',
                 '6': 'TCP protocol recognised.',
                 '17': 'UDP protocol recognised.',
@@ -279,6 +280,11 @@ class CaptureHandler:
                     'Source Address': packet.ipv6.src.upper(),
                     'Destination Address': packet.ipv6.dst.upper()
                 }
+                cap_proto_num = ip_info['Next Header']
+                if cap_proto_num in self.protocol_num:
+                    ip_info['Next Header'] = ip_info['Next Header'] + " -> " + self.protocol_num[cap_proto_num]
+                else:
+                    ip_info['Next Header'] = ip_info['Next Header'] + " Unknown Next Header Number Found. "
                 return ip_info
             else:
                 print("UNKNOWN IP VERSION FOUND: ", ip_version)
