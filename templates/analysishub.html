@@ -207,12 +207,22 @@
 
                     {% if ip_info != [] %}
                     <!--       IP ACCORDION BUTTON         -->
-                        <button class="accordion">Captured IPv4 Header Information</button>
+                        <button class="accordion">Captured IP Header Information</button>
                         <div class="panel">
                         <br>
                         <h4>IP Information</h4>
                         <hr>
-                        <p>IP is the ...</p>
+                        <p>The Internet Protocol (AKA IP) is the method by which data is sent from one computer to
+                            another over the Internet.The IP Header points out the source and destination of the packet,
+                            while the actual data (the packet minus all headers, descriptive meta-data) being
+                            transferred over the Internet is called the Payload.
+
+                        </p>
+                        <br>
+                        <p>
+                            For further information about what each field found within a IP Header, select one of the options below.
+                        </p>
+                        <br>
                             {% for dict_item in ip_info %}
                                 {{ loop.index }}
                                 {% for key, value in dict_item.items() %}
@@ -230,10 +240,12 @@
                                         <br>
 
                                      {% elif key == 'Header Length' %}
-                                        <h5>What is the ...</h5>
-                                        <p>A Type is...</p>
+                                        <h5>What is the Header Length?</h5>
+                                        <p>
+                                           The Header Length is the total length of the IP Header in the packet.
+                                        </p>
                                         <br>
-                                        <p>Packet's Type: {{ value | safe }}</p>
+                                        <p>Packet's Header Length: {{ value | safe }}</p>
                                         <br>
 
                                      {% elif key == 'Type of Service' %}
@@ -244,10 +256,14 @@
                                         <br>
 
                                      {% elif key == 'Total Length' %}
-                                        <h5>What is the ...</h5>
-                                        <p>A Type is...</p>
+                                        <h5>What is the Total Length?</h5>
+                                        <p>
+                                            The Total Length of the IP Header is the value of the entire IP Packet which
+                                            includes the IP Header and the IP Payload. The IP Payload is only the actual
+                                            data being received by the destination system.
+                                        </p>
                                         <br>
-                                        <p>Packet's ...: {{ value | safe }}</p>
+                                        <p>Packet's Total Length: {{ value | safe }}</p>
                                         <br>
 
                                      {% elif key == 'Identification' %}
@@ -465,6 +481,7 @@
                                             <p>{{ key | safe }}: {{ value | safe }}</p>
                                             <br>
                                         {% endif %}
+                                    </div>
                                 {% endfor %}
                                 <br>
                             {% endfor %}

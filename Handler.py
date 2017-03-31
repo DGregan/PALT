@@ -26,7 +26,7 @@ class DeviceHandler:
         except OSError as error:
             print("OS Error: {0}".format(error))
         except ValueError:
-            print("TABLE INFO CAPTURE ERROR")
+            print("ERROR: SELECTED_DEVICE")
         except:
             print("Unexpected Error", sys.exc_info()[0])
             raise
@@ -354,7 +354,7 @@ class CaptureHandler:
         '''
         try:
             http_info = {
-                'Connection': packet.http.connection,
+                #'Connection': packet.http.connection,
                 'Protocol': packet.http.layer_name.upper(),
                 'Request Version': packet.http.request_version,
                 'Request Method': packet.http.request_method,
@@ -392,25 +392,25 @@ class CaptureHandler:
 
 
 
-    '''
-    def main(file):
-        dh = DeviceHandler()
-        ch = CaptureHandler()
-        capture = pyshark.FileCapture(file)
-        (eth_info, ip_info, table_info, tcp_info, udp_info, http_info) = ch.packet_dissector(capture)
-        # TODO NEED TO RETURN MERGED LIST, TO BE USED TABLE INFO
-        print("IN MAIN")
+'''
+def main(file):
+    dh = DeviceHandler()
+    ch = CaptureHandler()
+    capture = pyshark.FileCapture(file)
+    (eth_info, ip_info, table_info, tcp_info, udp_info, http_info) = ch.packet_dissector(capture)
+    # TODO NEED TO RETURN MERGED LIST, TO BE USED TABLE INFO
+    print("IN MAIN")
 
-        print("-------TCP-------")
-        print(http_info)
+    print("-------TCP-------")
+    print(http_info)
 
-        #print(http_info)
-        #print(len(table_info))
-        #print(table_info)
-       # print(merged_list)
+    #print(http_info)
+    #print(len(table_info))
+    #print(table_info)
+   # print(merged_list)
 
 
-    if __name__== '__main__':
-        main(file="test_http.pcap")
+if __name__== '__main__':
+    main(file="test_http.pcap")
 
-    '''
+'''
