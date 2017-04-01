@@ -317,15 +317,17 @@
 
 
                                      {% elif key == 'Header Checksum' %}
-                                        <h3>What is the ...</h3>
+                                        <h3>What is the Header Checksum field?</h3>
                                         <p>A ... is...</p>
                                         <br>
-                                        <p> Packet's ...:   <strong>{{ value | safe }}</strong></p>
+                                        <p> Packet's Header Checksum:   <strong>{{ value | safe }}</strong></p>
                                         <br>
 
                                      {% elif key == 'Source Address' %}
                                         <h3>What is the Source Address field?</h3>
-                                        <p>A ... is...</p>
+                                        <p>
+                                            The Source Address is the IP address that states the source of the packet.
+                                        </p>
                                         <br>
                                         <p> Packet's Source Address:   <strong>{{ value | safe }}</strong></p>
                                         <br>
@@ -366,10 +368,12 @@
                                         <br>
 
                                      {% elif key == 'Flow Label' %}
-                                        <h3>What is the ...</h3>
-                                        <p>A ... is...</p>
+                                        <h3>What is the Flow Label field?</h3>
+                                        <p>
+
+                                        </p>
                                         <br>
-                                        <p> Packet's ...:<strong>{{ value | safe }}</strong></p>
+                                        <p> Packet's Flow Label:<strong>{{ value | safe }}</strong></p>
                                         <br>
 
                                      {% elif key == 'Payload Length' %}
@@ -418,79 +422,124 @@
                         <button class="accordion">Captured TCP Header Information</button>
                         <div class="panel">
                         <br>
+                        <h4>TCP Information</h4>
+                        <hr>
+                        <p>
+                           The Transmission Control Protocol (TCP) is one of the main protocol of the internet.
+                            It provides reliable, ordered, error checked delivery of data through streams between
+                            applications running on hosts on IP network.
+                        </p>
+                        <br>
+                        <p>
+                            For further information about what each field found within a TCP Header, select one of the options below.
+                        </p>
+                        <br>
                             {% for dict_item in tcp_info %}
                                 {{ loop.index }}
                                 {% for key, value in dict_item.items() %}
                                     <button class="inner-accordion">{{ key | safe }}</button>
                                     <div class="inner-panel">
                                         {% if key == 'Source Port' %}
-                                            <h5>What is the ...</h5>
-                                            <p>A ... is...</p>
+                                            <h3>What is the Source Port field?</h3>
+                                            <p>
+                                                The Source Port is the number that identifies the port where the packet information is sent from.
+                                            </p>
                                             <br>
-                                            <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                            <p>Packet's Source Port:  <strong>{{ value | safe }}</strong></p>
                                             <br>
 
                                         {% elif key == 'Dest. Port' %}
-                                                <h5>What is the ...</h5>
-                                                <p>A ... is...</p>
+                                                <h3>What is the Destination Port field?</h3>
+                                                <p>
+                                                    The Destination Port is the number that identifies the port where the packet information is sent to.
+                                                </p>
                                                 <br>
-                                                <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                                <p>Packet's Destination Port:  <strong>{{ value | safe }}</strong></p>
                                                 <br>
 
                                         {% elif key == 'Sequence Number' %}
-                                                <h5>What is the ...</h5>
-                                                <p>A ... is...</p>
+                                                <h3>What is the Sequence Number field?</h3>
+                                                <p>
+                                                    The Sequence Number indicates the position of the current packet's segment data
+                                                    relative to the beginning of the TCP data stream.
+                                                </p>
                                                 <br>
-                                                <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                                <p>Packet's Sequence Number:  <strong>{{ value | safe }}</strong></p>
                                                 <br>
 
                                         {% elif key == 'Acknowledgment Number' %}
-                                                <h5>What is the ...</h5>
-                                                <p>A ... is...</p>
+                                                <h3>What is the Acknowledgment Number</h3>
+                                                <p>
+                                                    The Acknowledgment Number is used to indicate the next sequence number that the sender is expecting.
+                                                </p>
                                                 <br>
-                                                <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                                <p>Packet's Acknowledgment Number:  <strong>{{ value | safe }}</strong></p>
                                                 <br>
 
                                         {% elif key == 'Reserve' %}
-                                                <h5>What is the ...</h5>
-                                                <p>A ... is...</p>
+                                                <h3>What is the Reserve field?</h3>
+                                                <p>
+                                                    For future use and should be set to zero.
+                                                </p>
                                                 <br>
-                                                <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                                <p>Packet's Reserve:  <strong>{{ value | safe }}</strong></p>
                                                 <br>
 
                                         {% elif key == 'Flags' %}
-                                                <h5>What is the ...</h5>
-                                                <p>A ... is...</p>
+                                                <h3>What are the Flag fields?</h3>
+                                                <p>
+                                                    The Flag fields are 'control' bits use to indicate what type of connection states or information about
+                                                    how the packet should be handled by the receiving system.
+                                                    The flag values can be set to '1' meaning active and '0' meaning inactive.
+                                                    <ul>
+                                                        <li>CWR</li>
+                                                        <li>ECN</li>
+                                                        <li>URG - Indicates the Urgent pointer field contains significant information.</li>
+                                                        <li>ACK - </li>
+                                                        <li>PSH - The 'push' flag is used by TCP to allow a sending application to specify that the data must be pushed through immediately.</li>
+                                                        <li>RST- Indicates if the TCP connection must be reset.</li>
+                                                        <li>SYN - The 'synchronize' flag is set to signal that the synchronize sequence numbers should occur. </li>
+                                                        <li>FIN - If this flag is set, this causes the TCP connection to terminate</li>
+                                                    </ul>
+                                                </p>
                                                 <br>
-                                                <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                                <p>Packet's Flags:  <strong>{{ value | safe }}</strong></p>
 
 
                                         {% elif key == 'Window Size' %}
-                                                <h5>What is the ...</h5>
-                                                <p>A ... is...</p>
+                                                <h3>What is the Window field?</h3>
+                                                <p>
+                                                    The Window field indicates how many octets () of data can be received by the TCP buffer.
+                                                    It is used to provide flow control for the packet.
+                                                </p>
                                                 <br>
-                                                <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                                <p>Packet's Window:  <strong>{{ value | safe }}</strong></p>
                                                 <br>
 
                                         {% elif key == 'Checksum' %}
-                                                <h5>What is the ...</h5>
-                                                <p>A ... is...</p>
+                                                <h3>What is the Checksum field?</h3>
+                                                <p>
+
+                                                </p>
                                                 <br>
-                                                <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                                <p>Packet's Checksum:  <strong>{{ value | safe }}</strong></p>
                                                 <br>
 
                                         {% elif key == 'Checksum Status' %}
-                                                <h5>What is the ...</h5>
+                                                <h3>What is the ...</h3>
                                                 <p>A ... is...</p>
                                                 <br>
                                                 <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
                                                 <br>
 
                                         {% elif key == 'Urgent Pointer' %}
-                                                <h5>What is the ...</h5>
-                                                <p>A ... is...</p>
+                                                <h3>What is the Urgent Pointer field?</h3>
+                                                <p>
+                                                    The Urgent Pointer specifies the offset of urgent data in the message, relative to the
+			                                        Sequence number in the header. This field is only valid if URG Flag is set.
+                                                </p>
                                                 <br>
-                                                <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                                <p>Packet's Urgent Pointer:  <strong>{{ value | safe }}</strong></p>
                                                 <br>
 
                                         {% else %}
@@ -508,48 +557,72 @@
                         <!--        UDP ACCORDION BUTTON         -->
                         <button class="accordion">Captured UDP Header Information</button>
                         <div class="panel">
+                        <br>
+                        <h4>UDP Information</h4>
+                        <hr>
+                        <p>
+                           The User Datagram Protocl (UDP) uses a simple connectionless transmission model. Provides checksum for data integrity, port numbers
+                            for addressing diff function at source + dest of datagram. Communication is achieved by transmitting info in one
+                            direction from source to destination without verifying readiness or state of receiver
+                        </p>
+                        <br>
+                        <p>
+                            For further information about what each field found within a UDP Header, select one of the options below.
+                        </p>
+                        <br>
                             {% for dict_item in udp_info %}
                                     {{ loop.index }}
                                     {% for key, value in dict_item.items() %}
                                         <button class="inner-accordion">{{ key | safe }}</button>
                                         <div class="inner-panel">
                                         {% if key == 'Source Port' %}
-                                            <h5>What is the ...</h5>
-                                            <p>A ... is...</p>
+                                            <h3>What is the Source Port field?</h3>
+                                            <p>
+                                                The Source Port identifies the senders port when meaningful, assumed to be reply port as well if needed.
+                                                If the port is not in used, then it is set to '0'.
+                                            </p>
                                             <br>
-                                            <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                            <p>Packet's Source Port:  <strong>{{ value | safe }}</strong></p>
                                             <br>
 
                                         {% elif key == 'Dest. Port' %}
-                                            <h5>What is the ...</h5>
-                                            <p>A ... is...</p>
+                                            <h3>What is the Destination Port field?</h3>
+                                            <p>
+                                                The Destination Port identifies the receivers port of the packet and is a required field.
+                                            </p>
                                             <br>
-                                            <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                            <p>Packet's Destination Port:  <strong>{{ value | safe }}</strong></p>
                                             <br>
 
                                         {% elif key == 'Length' %}
-                                            <h5>What is the ...</h5>
-                                            <p>A ... is...</p>
+                                            <h3>What is the Length field?</h3>
+                                            <p>
+                                                The Length field is length of the UDP Header and UDP data in bytes.
+                                            </p>
                                             <br>
-                                            <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                            <p>Packet's Length:  <strong>{{ value | safe }}</strong></p>
                                             <br>
 
                                         {% elif key == 'Checksum' %}
-                                            <h5>What is the ...</h5>
-                                            <p>A ... is...</p>
+                                            <h3>What is the Checksum field?</h3>
+                                            <p>
+                                                The Checksum is used as an error-detection mechanism. The machine that sends the packet
+                                                runs a mathematical algorithm on the datagram. The destination machine then runs the same
+                                                algorithm on the datagram and if the values match then the datagram wasn't damaged on its journey.
+                                            </p>
                                             <br>
-                                            <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
+                                            <p>Packet's Checksum:  <strong>{{ value | safe }}</strong></p>
                                             <br>
 
                                         {% elif key == 'Checksum Status' %}
-                                            <h5>What is the ...</h5>
+                                            <h3>What is the ...</h3>
                                             <p>A ... is...</p>
                                             <br>
                                             <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
                                             <br>
 
                                         {% elif key == 'Protocol' %}
-                                            <h5>What is the ...</h5>
+                                            <h3>What is the </h3>
                                             <p>A ... is...</p>
                                             <br>
                                             <p>Packet's ...:  <strong>{{ value | safe }}</strong></p>
