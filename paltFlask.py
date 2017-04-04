@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, request, url_for, make_respo
 from Handler import DeviceHandler, CaptureHandler
 
 app = Flask(__name__)
-app.config.from_object('config.TestConfig')
+# app.config.from_object('config.TestConfig')
 
 
 @app.route('/')

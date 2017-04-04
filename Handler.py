@@ -23,8 +23,8 @@ class DeviceHandler:
         '''
         try:
             self.device = interface
-            capture_device = self.device.split()
-            capture_device = capture_device[2].strip("()")
+            capture_device = self.device.split()  # Example:  1. {DEVICE\124} ('WiFi') -> [1., {Device\124}, ('WiFi') ]
+            capture_device = capture_device[2].strip("()")  # Get contents of () field
             return capture_device
         except OSError as error:
             print("OS Error: {0}".format(error))
@@ -185,17 +185,15 @@ class CaptureHandler:
                 # Preamble
                 'Source MAC Address': packet.eth.src.upper(),
                 'Destination MAC Address': packet.eth.dst.upper(),
-                'Protocol': packet.eth.layer_name.upper(),
+                #'Protocol': packet.eth.layer_name.upper(),
                 'Type Code': packet.eth.type
-                # Data Payload
-                #'CRC': packet.eth.fcs  # Frame Check Sequence
             }
             # Check for the Ethertype against Dictionary of known Ethertypes
             cap_ethertype = eth_info['Type Code']
             sliced_ethertype = cap_ethertype[6:]  # Strip unnecessary digits
             sliced_ethertype = '0x' + sliced_ethertype.upper()  # Returns '0x' prefix
             if sliced_ethertype in self.ether_type:  # Checks Ethertype against dictionary of known Ethertypes
-                eth_info['Type Code'] = eth_info['Type Code'] + " ->" + self.ether_type[sliced_ethertype]
+                eth_info['Type Code'] = eth_info['Type Code'] + " -> " + self.ether_type[sliced_ethertype]
             else:
                 eth_info['Type Code'] = eth_info['Type Code'] + " Unknown Ethertype Found."
             return eth_info
@@ -298,10 +296,10 @@ class CaptureHandler:
                 # Strip IPv4 field values from current packet
                 ip_info = {
                     'Version': packet.ip.version, 'Header Length': packet.ip.hdr_len + " bytes", 'Type of Service': 'N/A',
-                    'Total Length': packet.ip.len + " bytes", 'Identification': packet.ip.id, 'Protocol': packet.ip.layer_name.upper(),
+                    'Total Length': packet.ip.len + " bytes", 'Identification': packet.ip.id,
                     'Flags': {'RB': packet.ip.flags_rb, 'D': packet.ip.flags_df, 'M': packet.ip.flags_mf},
                     'Fragment Offset': packet.ip.frag_offset, 'Time To Live': packet.ip.ttl, 'Protocol Number': packet.ip.proto.upper(),
-                    'Header Checksum': packet.ip.checksum, 'Checksum Status': packet.ip.checksum_status,
+                    'Header Checksum': packet.ip.checksum,
                     'Source Address': packet.ip.src, 'Destination Address': packet.ip.dst
                 }
                 # Check ip_info['Protocol Number'] against eth_type for a match
@@ -319,8 +317,8 @@ class CaptureHandler:
                 ip_info = {
                     'Version': ip_version,
                     'Traffic Class': packet.ipv6.tclass,
-                    'Traffic Class DSCP': packet.ipv6.tclass_dscp,
-                    'Traffic Class ECN': packet.ipv6.tclass_ecn,
+                   # 'Traffic Class DSCP': packet.ipv6.tclass_dscp,
+                   # 'Traffic Class ECN': packet.ipv6.tclass_ecn,
                     'Flow Label': packet.ipv6.flow,
                     'Payload Length': packet.ipv6.plen,
                     'Next Header': packet.ipv6.nxt,
@@ -362,7 +360,7 @@ class CaptureHandler:
                                   },
                         'Window Size': packet.tcp.window_size, 'Window Size Value': packet.tcp.window_size_value,
                         'Header Length': packet.tcp.hdr_len + " bytes", 'Protocol': packet.tcp.layer_name.upper(),
-                        'Checksum': packet.tcp.checksum, 'Checksum Status': packet.tcp.checksum_status,
+                        'Checksum': packet.tcp.checksum,
                         'Urgent Pointer': packet.tcp.urgent_pointer
                         #, 'Segment Data': packet.tcp.segment_data
                         }
@@ -395,7 +393,6 @@ class CaptureHandler:
                 'Protocol': packet.udp.layer_name.upper(),
                 'Length': packet.udp.length + " bytes",
                 'Checksum': packet.udp.checksum,
-                'Checksum Status': packet.udp.checksum_status
             }
             return udp_info
         except OSError as error:
