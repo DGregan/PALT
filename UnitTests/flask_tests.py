@@ -16,11 +16,9 @@ class FlaskTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-
     def test_server_is_up(self):
         response = urllib2.urlopen(self.baseURL)
         self.assertEqual(response.code, 200)
-
 
     def test_index_page(self):
         response = self.tester.get('/', follow_redirects=True)
@@ -40,13 +38,11 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_help_page(self):
-        response = self.tester.get('/help')
+        response = self.tester.get('/resources')
         self.assertEqual(response.status_code, 200)
 
 
-
 class TestNotRenderTemplates(TestCase):
-
     render_templates = False
 
     def test_assert_not_render_template(self):

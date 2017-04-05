@@ -30,7 +30,6 @@ class TestDeviceHandler(TestCase):
         self.found_devices = self.test_get_devices()
 
 
-
     def test_get_devices(self):
         '''
         TEST - Check if there are any network interface devices to be found

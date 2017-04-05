@@ -11,7 +11,7 @@ class TestCaptureHandler(TestCase):
         self.dh = DeviceHandler()
         self.ip_capture_file = "test_ipv4_tcp_smtp.cap"
         self.tcp_capture_file = "test_tcp_connection_end.cap"
-        self.udp_capture_file = ""
+        self.udp_capture_file = "test_udp.pcap"
         self.http_capture_file = "test_http2.cap"
 
     def test_get_ip_version(self):
