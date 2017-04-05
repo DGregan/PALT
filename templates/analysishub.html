@@ -1,5 +1,5 @@
 {% include 'head-static.html' %}
-<title xmlns="http://www.w3.org/1999/html">Analysis Hub - PALT</title>
+<title>Analysis Hub - PALT</title>
 
 <body>
 
@@ -10,17 +10,18 @@
     <div class="container">
         <br><br>
         <div class="row">
-                <div class="col-lg-12">
-                    <h1><i class="fa fa-cogs"></i> Analysis Hub</h1>
-                    <hr>
-                    <p>
-                        The Analysis Hub is where all of the captured network traffic from chosen capture device will be displayed.
-                    </p>
-                    <br>
-                    <p>
-                          Chosen Captured Device:  <strong>{{ dev | safe }}</strong>
-                    </p>
-                </div> <!-- col-lg-12 -->
+            <div class="col-lg-12">
+                <h1><i class="fa fa-cogs"></i> Analysis Hub</h1>
+                <hr>
+                <p>
+                    The Analysis Hub is where all of the captured network traffic from chosen capture device will be
+                    displayed.
+                </p>
+                <br>
+                <p>
+                    Chosen Captured Device: <strong>{{ dev | safe }}</strong>
+                </p>
+            </div> <!-- col-lg-12 -->
         </div><!-- row -->
 
         <br>
@@ -47,7 +48,8 @@
                             An IP Address is an identifier assigned to each device connected to
                             a network in order to locate it.
                             <br>
-                            <strong>Source IP Address</strong>: The Source IP Address is the 'home address' of the device
+                            <strong>Source IP Address</strong>: The Source IP Address is the 'home address' of the
+                            device
                             on the network.
                             <br>
                             <strong>Destination IP Address</strong>: The Destination IP Address is the address where the
@@ -63,12 +65,13 @@
                             There are two possible Transport Protocols:
                             <br>
                             <strong>TCP</strong> (Transmission Control Protocol):
-                             Is a protocol that provides reliable, ordered, error checked delivery of data through streams between
+                            Is a protocol that provides reliable, ordered, error checked delivery of data through
+                            streams between
                             applications running on hosts/devices on an IP network.
                             <br>
                             <strong>UDP</strong> (User Datagram Protocol):
                             This protocol
-	                        uses a simple connectionless transmission model for streaming of data.
+                            uses a simple connectionless transmission model for streaming of data.
                             Provides checksum for data integirty, port numbers
                         </p>
                     </a>
@@ -85,8 +88,10 @@
                         <h4 class="list-group-item-heading">Source/Destination MAC Address</h4>
                         <p class="list-group-item-text">
                             Network cards each have a unique 'physical' MAC address.
-                            Packets that are sent on the ethernet are always coming from a source MAC address and sent to
-                            a destination MAC address. If a network adapter is receiving a packet, it is comparing the packet’s
+                            Packets that are sent on the ethernet are always coming from a source MAC address and sent
+                            to
+                            a destination MAC address. If a network adapter is receiving a packet, it is comparing the
+                            packet’s
                             destination MAC address to the adapter’s own MAC address.
                             If the addresses match, the packet is processed, otherwise it is discarded.
                         </p>
@@ -116,8 +121,9 @@
             <div class="col-lg-12">
                 <h2><i class="fa fa-download"></i> Download Summary</h2>
                 <hr>
+
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default">Download Summary (CSV)</button>
+                    <button type="button" class="btn btn-default" id="dlcsv" onclick="download('{{ pandas_csv | safe}}');">Download Summary</button>
                 </div><!-- btn group -->
             </div> <!-- col-lg-12 -->
         </div><!-- row -->
@@ -132,140 +138,151 @@
                 <hr>
 
                 <br>
-                    {% if eth_info != [] %}
+                {% if eth_info != [] %}
                     <!--       eth ACCORDION BUTTON         -->
-                        <button class="accordion">Captured Ethernet Frame Information</button>
-                        <div class="panel">
+                    <button class="accordion">Captured Ethernet Frame Information</button>
+                    <div class="panel">
                         <br>
                         <h4>Ethernet Frame</h4>
                         <hr>
                         <p>
-                            An Ethernet Frame is used for physical layer communication transmission between hardware devices.
-                            The Ethernet Frame starts with an Ethernet Header which contains the source and destination MAC address
-                            (unique physical address) of the hardware devices where data is transmitted between. The frame also contains
+                            An Ethernet Frame is used for physical layer communication transmission between hardware
+                            devices.
+                            The Ethernet Frame starts with an Ethernet Header which contains the source and destination
+                            MAC address
+                            (unique physical address) of the hardware devices where data is transmitted between. The
+                            frame also contains
                             the payload which actual data (the packet minus all headers, descriptive meta-data) being
                             transferred over the Internet.
                         </p>
                         <br>
                         <p>
-                            For further information about what each field found within a Ethernet Frame, select one of the options below.
+                            For further information about what each field found within a Ethernet Frame, select one of
+                            the options below.
                         </p>
                         <br>
-                            {% for dict_item in eth_info %}
-                                <h3>{{ loop.index }}</h3>
-                                <br>
-                                {% for key, value in dict_item.items() %}
-                                    <button class="inner-accordion">{{ key | safe }}</button>
-                                    <div class="inner-panel">
-                                        {% if key == 'Destination MAC Address' %}
-                                            <br>
-                                            <h3>What is the Destination MAC Address?</h3>
-                                            <hr>
-                                            <p>
-                                                The Destination MAC Address is the 'unique' physical hardware address of the
-                                                destination device where the network traffic is being sent to.
-                                            </p>
-                                            <br>
-                                            <p>Packet's Destination MAC Address:  <strong>{{ value | safe }}</strong></p>
-                                            <br>
+                        {% for dict_item in eth_info %}
+                            <h3>{{ loop.index }}</h3>
+                            <br>
+                            {% for key, value in dict_item.items() %}
+                                <button class="inner-accordion">{{ key | safe }}</button>
+                                <div class="inner-panel">
+                                    {% if key == 'Destination MAC Address' %}
+                                        <br>
+                                        <h3>What is the Destination MAC Address?</h3>
+                                        <hr>
+                                        <p>
+                                            The Destination MAC Address is the 'unique' physical hardware address of the
+                                            destination device where the network traffic is being sent to.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Destination MAC Address: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Source MAC Address' %}
-                                            <br>
-                                            <h3>What is the Source Address?</h3>
-                                            <hr>
-                                            <p>
-                                                The Source MAC Address is the 'unique' physical hardware address of the
-                                                source device where the network traffic is being sent from.
-                                            </p>
-                                            <br>
-                                            <p>Packet's Source MAC Address:  <strong>{{ value | safe }}</strong></p>
-                                            <br>
+                                    {% elif key == 'Source MAC Address' %}
+                                        <br>
+                                        <h3>What is the Source Address?</h3>
+                                        <hr>
+                                        <p>
+                                            The Source MAC Address is the 'unique' physical hardware address of the
+                                            source device where the network traffic is being sent from.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Source MAC Address: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Type Code' %}
-                                            <br>
-                                            <h3>What is the Type Code?</h3>
-                                            <hr>
-                                            <p>
-                                                The Ethernet Type Code is a simple code used to indicate what
-                                                kind of data is held within the packet. These codes correspond with the protocol being
-                                                used for the remainder of the packet. (Ex. Address Resolution Protocol, Internet Protocol, etc..)
-                                            </p>
-                                            <br>
-                                            <p>Packet's Type Code:  <strong>{{ value | safe }}</strong></p>
-                                            <br>
+                                    {% elif key == 'Type Code' %}
+                                        <br>
+                                        <h3>What is the Type Code?</h3>
+                                        <hr>
+                                        <p>
+                                            The Ethernet Type Code is a simple code used to indicate what
+                                            kind of data is held within the packet. These codes correspond with the
+                                            protocol being
+                                            used for the remainder of the packet. (Ex. Address Resolution Protocol,
+                                            Internet Protocol, etc..)
+                                        </p>
+                                        <br>
+                                        <p>Packet's Type Code: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% else %}
-                                            <br>
-                                            <p>Data Not Found</p>
-                                            <br>
+                                    {% else %}
+                                        <br>
+                                        <p>Data Not Found</p>
+                                        <br>
 
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
-                                <br>
+                                    {% endif %}
+                                </div>
                             {% endfor %}
-                        </div>
-                    {% endif %} <!-- End ETH -->
+                            <br>
+                        {% endfor %}
+                    </div>
+                {% endif %} <!-- End ETH -->
 
-                    {% if ip_info != [] %}
+                {% if ip_info != [] %}
                     <!--       IP ACCORDION BUTTON         -->
-                        <button class="accordion">Captured IP Header Information</button>
-                        <div class="panel">
+                    <button class="accordion">Captured IP Header Information</button>
+                    <div class="panel">
                         <br>
                         <h4>IP Information</h4>
                         <hr>
                         <p>
                             The Internet Protocol (AKA IP) is the method by which data is sent from one computer to
-                            another over the Internet. The IP Header points out the source and destination of the packet,
+                            another over the Internet. The IP Header points out the source and destination of the
+                            packet,
                             while the actual data (the packet minus all headers, descriptive meta-data) being
                             transferred over the Internet is called the Payload.
 
                         </p>
                         <br>
                         <p>
-                            For further information about what each field found within a IP Header, select one of the options below.
+                            For further information about what each field found within a IP Header, select one of the
+                            options below.
                         </p>
                         <br>
-                            {% for dict_item in ip_info %}
-                                {{ loop.index }}
-                                {% for key, value in dict_item.items() %}
-                                    <button class="inner-accordion">{{ key | safe }}</button>
-                                    <div class="inner-panel">
+                        {% for dict_item in ip_info %}
+                            {{ loop.index }}
+                            {% for key, value in dict_item.items() %}
+                                <button class="inner-accordion">{{ key | safe }}</button>
+                                <div class="inner-panel">
 
-                                     {% if key == 'Version' %}
-                                         <br><h3>What is the Version field?</h3>
+                                    {% if key == 'Version' %}
+                                        <br><h3>What is the Version field?</h3>
                                         <hr>
-                                         <p>
-                                             The version field describes what version of the Internet Protocol (IP) is being
+                                        <p>
+                                            The version field describes what version of the Internet Protocol (IP) is
+                                            being
                                             used for this packet.
-                                         </p>
+                                        </p>
                                         <br>
-                                         <p>Packet's Internet Protocol Version:  <strong>{{ value | safe }}</strong></p>
+                                        <p>Packet's Internet Protocol Version: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Header Length' %}
+                                    {% elif key == 'Header Length' %}
                                         <br><h3>What is the Header Length field?</h3>
                                         <hr>
                                         <p>
-                                           The Header Length is the total length of the IP Header in the packet.
+                                            The Header Length is the total length of the IP Header in the packet.
                                         </p>
                                         <br>
-                                        <p>Packet's Header Length:  <strong>{{ value | safe }}</strong></p>
+                                        <p>Packet's Header Length: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Type of Service' %}
+                                    {% elif key == 'Type of Service' %}
                                         <br><h3>What is the Type of Service field?</h3>
                                         <hr>
                                         <p>
-                                            The Type of Service field in the IPv4 Header provides an indication on the Quality
-                                            of Service(QoS) desired of the packet. These QoS values of the IP packet can be : Precedence,
+                                            The Type of Service field in the IPv4 Header provides an indication on the
+                                            Quality
+                                            of Service(QoS) desired of the packet. These QoS values of the IP packet can
+                                            be : Precedence,
                                             Delay, Throughput and Reliability.
                                         </p>
                                         <br>
-                                        <p>Packet's Type of Service:  <strong>{{ value | safe }}</strong></p>
+                                        <p>Packet's Type of Service: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Total Length' %}
+                                    {% elif key == 'Total Length' %}
                                         <br><h3>What is the Total Length field?</h3>
                                         <hr>
                                         <p>
@@ -274,408 +291,551 @@
                                             data being received by the destination system.
                                         </p>
                                         <br>
-                                        <p>Packet's Total Length:  <strong>{{ value | safe }}</strong></p>
+                                        <p>Packet's Total Length: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Identification' %}
+                                    {% elif key == 'Identification' %}
                                         <br><h3>What is the Identification field?</h3>
                                         <hr>
                                         <p>
                                             Whenever a datagram (used when communication is unreliable) is assembled it
-                                            is provided with a unique ID number. If this packet happens to become fragmented
-                                            (splits into smaller pieces), this ID is ued to reassemble the datagram when it
+                                            is provided with a unique ID number. If this packet happens to become
+                                            fragmented
+                                            (splits into smaller pieces), this ID is ued to reassemble the datagram when
+                                            it
                                             is received at it's destination.
                                         </p>
                                         <br>
-                                        <p>Packet's Identification Number:  <strong>{{ value | safe }}</strong></p>
+                                        <p>Packet's Identification Number: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Flags' %}
+                                    {% elif key == 'Flags' %}
                                         <br><h3>What is the Flags field?</h3>
                                         <hr>
-                                       <p>
-                                            The Flag fields are 'control' bits use to control or identify packet fragments
+                                        <p>
+                                            The Flag fields are 'control' bits use to control or identify packet
+                                            fragments
                                             The flag values can be set to '1' meaning active and '0' meaning inactive.
                                             <br>
-                                            <ul>
-                                                <li>- Reserved:</li>
-                                                <li>- DF (Don't Fragment): If this flag is set and fragmentation of the packet is required to route the packet
-                                                then the packet is dropped. It's used to send packets to a host that doesn't have the resources to handle fragmentation.
-                                                </li>
-                                                <li>- MF (More Fragments): If this flag is set set then it represents a
-                                                    fragmented IP datagram that has more fragments after it.</li>
-                                            </ul>
+                                        <ul>
+                                            <li>- Reserved: This field kept reserved for future use.</li>
+                                            <li>- DF (Don't Fragment): If this flag is set and fragmentation of the
+                                                packet is required to route the packet
+                                                then the packet is dropped. It's used to send packets to a host that
+                                                doesn't have the resources to handle fragmentation.
+                                            </li>
+                                            <li>- MF (More Fragments): If this flag is set set then it represents a
+                                                fragmented IP datagram that has more fragments after it.
+                                            </li>
+                                        </ul>
                                         </p>
                                         <br>
                                         <p>Packet's Flags: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Fragment Offset' %}
+                                    {% elif key == 'Fragment Offset' %}
                                         <br><h3>What is the Fragment Offset field?</h3>
                                         <hr>
                                         <p>
-                                            The Fragment offset is used when the IP datagram needs to be fragmented for it to
-                                            arrive at its destination. This field contains the offset from the start of the IP Datagram.
-                                            It is primarily used in the reassembly of fragmented IP datagrams when they arrive at their
+                                            The Fragment offset is used when the IP datagram needs to be fragmented for
+                                            it to
+                                            arrive at its destination. This field contains the offset from the start of
+                                            the IP Datagram.
+                                            It is primarily used in the reassembly of fragmented IP datagrams when they
+                                            arrive at their
                                             destination.
                                         </p>
                                         <br>
                                         <p>Packet's Fragment Offset: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Time To Live' %}
+                                    {% elif key == 'Time To Live' %}
                                         <br><h3>What is the Time To Live field?</h3>
                                         <hr>
                                         <p>
-                                            The Time To Live is the amount of time a datagram is allowed to exist on the network.
-                                            Usually set to 15/30. The time is reduced by one every time the datagram passes
-                                            through a host / router. If the TTL reaches 0 before the datagram makes it to it's destination,
+                                            The Time To Live is the amount of time a datagram is allowed to exist on the
+                                            network.
+                                            Usually set to 15/30. The time is reduced by one every time the datagram
+                                            passes
+                                            through a host / router. If the TTL reaches 0 before the datagram makes it
+                                            to it's destination,
                                             it is discarded and sends message back to originator that it can resend.
                                         </p>
                                         <br>
                                         <p>Packet's Time To Live: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Protocol Number' %}
+                                    {% elif key == 'Protocol Number' %}
                                         <br><h3>What is the Protocol Number field?</h3>
                                         <hr>
                                         <p>
-                                            The Protocol number is a code representing the transport protocol of the segment assigned to
-                                            IP layer. It identifies the next upper level protocol (TCP, UDP) where the data payload is being handed to.
+                                            The Protocol number is a code representing the transport protocol of the
+                                            segment assigned to
+                                            IP layer. It identifies the next upper level protocol (TCP, UDP) where the
+                                            data payload is being handed to.
                                         </p>
                                         <br>
-                                        <p> Packet's Protocol Number:   <strong>{{ value | safe }}</strong></p>
+                                        <p> Packet's Protocol Number: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
 
-                                     {% elif key == 'Header Checksum' %}
+                                    {% elif key == 'Header Checksum' %}
                                         <br><h3>What is the Header Checksum field?</h3>
                                         <hr>
                                         <p>
                                             The Header Checksum is a calculated valued stored in the IP header when the
-                                            datagram is sent from the source to the destination IP address. Once the datagram
+                                            datagram is sent from the source to the destination IP address. Once the
+                                            datagram
                                             arrives at its destination the checksum is calculated again and verified
-                                            against the checksum in stored in the Header. If the values are the same then
-                                            the datagram was not corrupted, if they don't match its then assumed the datagram
+                                            against the checksum in stored in the Header. If the values are the same
+                                            then
+                                            the datagram was not corrupted, if they don't match its then assumed the
+                                            datagram
                                             is corrupted.
 
-                                            It's used to check the integrity of an IP datagram when it arrives at its destination.
+                                            It's used to check the integrity of an IP datagram when it arrives at its
+                                            destination.
                                         </p>
                                         <br>
-                                        <p> Packet's Header Checksum:   <strong>{{ value | safe }}</strong></p>
+                                        <p> Packet's Header Checksum: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Source Address' %}
+                                    {% elif key == 'Source Address' %}
                                         <br><h3>What is the Source Address field?</h3>
                                         <hr>
                                         <p>
-                                            The Source Address is the IP address that identifies where the IP datagram has come from.
+                                            The Source Address is the IP address that identifies where the IP datagram
+                                            has come from.
                                         </p>
                                         <br>
-                                        <p> Packet's Source Address:   <strong>{{ value | safe }}</strong></p>
+                                        <p> Packet's Source Address: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Destination Address' %}
+                                    {% elif key == 'Destination Address' %}
                                         <br><h3>What is the Destination Address field?</h3>
                                         <hr>
                                         <p>
-                                            The Destination Address is the IP address that identifies where the IP datagram is to be sent to.
+                                            The Destination Address is the IP address that identifies where the IP
+                                            datagram is to be sent to.
                                         </p>
                                         <br>
-                                        <p> Packet's Destination Address:   <strong>{{ value | safe }}</strong></p>
+                                        <p> Packet's Destination Address: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Traffic Class' %}
+                                    {% elif key == 'Traffic Class' %}
                                         <br><h3>What is the Traffic Class field?</h3>
                                         <hr>
-                                        <p>A ... is...</p>
+                                        <p>The Traffic Class of the IPv6 Header is used by the source device and routers
+                                            to
+                                            identify the data packets that belong to the same traffic class and to
+                                            distinguish between
+                                            the priority of packets.
+                                        </p>
                                         <br>
-                                        <p> Packet's Traffic Class:   <strong>{{ value | safe }}</strong></p>
+                                        <p> Packet's Traffic Class: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Flow Label' %}
+                                    {% elif key == 'Flow Label' %}
                                         <br><h3>What is the Flow Label field?</h3>
                                         <hr>
                                         <p>
-                                            The Flow Label field of the IPv6 Header is used to maintain the sequential flow
-                                            of packets between networks. It helps the router identify that a particular packet
+                                            The Flow Label field of the IPv6 Header is used to maintain the sequential
+                                            flow
+                                            of packets between networks. It helps the router identify that a particular
+                                            packet
                                             belongs to a specfic flow of information.
                                         </p>
-                                         <br>
-                                         <p>The Flow Label helps avoid re-ordering of data packets and is designed for streaming/real-time media</p>
+                                        <br>
+                                        <p>The Flow Label helps avoid re-ordering of data packets and is designed for
+                                            streaming/real-time media</p>
                                         <br>
                                         <p> Packet's Flow Label:<strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Payload Length' %}
+                                    {% elif key == 'Payload Length' %}
                                         <br><h3>What is the Payload Length field?</h3>
                                         <hr>
                                         <p>
-                                            The Payload Length field specifies the size of the data payload following the IPv6 Header.
+                                            The Payload Length field specifies the size of the data payload following
+                                            the IPv6 Header.
                                         </p>
                                         <br>
-                                        <p> Packet's Payload Length:<strong>{{ value | safe }}</strong></p>
+                                        <p> Packet's Payload Length: <strong>{{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Next Header' %}
+                                    {% elif key == 'Next Header' %}
                                         <br><h3>What is the Next Header field?</h3>
                                         <hr>
                                         <p>
-                                            The Next Header field is used to identify the layer 4 transfer protocol which follows the IP header.
+                                            The Next Header field is used to identify the layer 4 transfer protocol
+                                            which follows the IP header.
                                         </p>
                                         <br>
                                         <p> Packet's Next Header:<strong> {{ value | safe }}</strong></p>
                                         <br>
 
-                                     {% elif key == 'Hop Limit' %}
+                                    {% elif key == 'Hop Limit' %}
                                         <br><h3>What is the Hop Limit field</h3>
                                         <hr>
                                         <p>
                                             The Hop Limit is the IPV6 version of Time To Live, found in a IPv4 Header.
-                                            The Hop Limit is the amount of time a datagram is allowed to exist on the network.
-                                            Each hop between network nodes / devices decrements the limit by 1 and when the hop reaches 0, packet is discarded.
+                                            The Hop Limit is the amount of time a datagram is allowed to exist on the
+                                            network.
+                                            Each hop between network nodes / devices decrements the limit by 1 and when
+                                            the hop reaches 0, packet is discarded.
                                         </p>
                                         <br>
                                         <p> Packet's Hop Limit:<strong> {{ value | safe }}</strong></p>
-
+                                        <br>
                                     {% else %}
                                         <br>
                                         <p>Data not Found</p>
                                         <br>
                                     {% endif %}
-                                    </div>
-                                {% endfor %}
-                                <br>
+                                </div>
                             {% endfor %}
-                        </div>
-                    {% endif %} <!-- end IP -->
+                            <br>
+                        {% endfor %}
+                    </div>
+                {% endif %} <!-- end IP -->
 
 
-                    <!--       TCP ACCORDION BUTTON         -->
-                    {% if tcp_info != [] %}
-                        <button class="accordion">Captured TCP Header Information</button>
-                        <div class="panel">
+                <!--       TCP ACCORDION BUTTON         -->
+                {% if tcp_info != [] %}
+                    <button class="accordion">Captured TCP Header Information</button>
+                    <div class="panel">
                         <br>
                         <h4>TCP Information</h4>
                         <hr>
                         <p>
-                           The Transmission Control Protocol (TCP) is one of the main protocol of the internet.
+                            The Transmission Control Protocol (TCP) is one of the main protocol of the internet.
                             It provides reliable, ordered, error checked delivery of data through streams between
                             applications running on hosts on IP network.
                         </p>
                         <br>
                         <p>
-                            For further information about what each field found within a TCP Header, select one of the options below.
+                            For further information about what each field found within a TCP Header, select one of the
+                            options below.
                         </p>
                         <br>
-                            {% for dict_item in tcp_info %}
-                                {{ loop.index }}
-                                {% for key, value in dict_item.items() %}
-                                    <button class="inner-accordion">{{ key | safe }}</button>
-                                    <div class="inner-panel">
-                                        {% if key == 'Source Port' %}
-                                            <br><h3>What is the Source Port field?</h3>
-                                            <hr>
-                                            <p>
-                                                The Source Port is the number that identifies the port where the packet information is sent from.
-                                            </p>
-                                            <br>
-                                            <p>Packet's Source Port:  <strong>{{ value | safe }}</strong></p>
-                                            <br>
+                        {% for dict_item in tcp_info %}
+                            {{ loop.index }}
+                            {% for key, value in dict_item.items() %}
+                                <button class="inner-accordion">{{ key | safe }}</button>
+                                <div class="inner-panel">
+                                    {% if key == 'Source Port' %}
+                                        <br><h3>What is the Source Port field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Source Port is the number that identifies the port where the packet
+                                            information is sent from.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Source Port: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Dest. Port' %}
-                                                <br><h3>What is the Destination Port field?</h3>
-                                                <hr>
-                                                <p>
-                                                    The Destination Port is the number that identifies the port where the packet information is sent to.
-                                                </p>
-                                                <br>
-                                                <p>Packet's Destination Port:  <strong>{{ value | safe }}</strong></p>
-                                                <br>
+                                    {% elif key == 'Dest. Port' %}
+                                        <br><h3>What is the Destination Port field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Destination Port is the number that identifies the port where the packet
+                                            information is sent to.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Destination Port: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Sequence Number' %}
-                                                <br><h3>What is the Sequence Number field?</h3>
-                                                <hr>
-                                                <p>
-                                                    The Sequence Number indicates the position of the current packet's segment data
-                                                    relative to the beginning of the TCP data stream.
-                                                </p>
-                                                <br>
-                                                <p>Packet's Sequence Number:  <strong>{{ value | safe }}</strong></p>
-                                                <br>
+                                    {% elif key == 'Sequence Number' %}
+                                        <br><h3>What is the Sequence Number field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Sequence Number indicates the position of the current packet's segment
+                                            data
+                                            relative to the beginning of the TCP data stream.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Sequence Number: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Acknowledgment Number' %}
-                                                <br><h3>What is the Acknowledgment Number</h3>
-                                                <hr>
-                                                <p>
-                                                    The Acknowledgment Number is used to indicate the next sequence number that the sender is expecting.
-                                                </p>
-                                                <br>
-                                                <p>Packet's Acknowledgment Number:  <strong>{{ value | safe }}</strong></p>
-                                                <br>
+                                    {% elif key == 'Acknowledgment Number' %}
+                                        <br><h3>What is the Acknowledgment Number</h3>
+                                        <hr>
+                                        <p>
+                                            The Acknowledgment Number is used to indicate the next sequence number that
+                                            the sender is expecting.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Acknowledgment Number: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Reserve' %}
-                                                <br><h3>What is the Reserve field?</h3>
-                                                <hr>
-                                                <p>
-                                                    For future use and should be set to zero.
-                                                </p>
-                                                <br>
-                                                <p>Packet's Reserve:  <strong>{{ value | safe }}</strong></p>
-                                                <br>
+                                    {% elif key == 'Reserve' %}
+                                        <br><h3>What is the Reserve field?</h3>
+                                        <hr>
+                                        <p>
+                                            For future use and should be set to zero.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Reserve: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Flags' %}
-                                                <br><h3>What are the Flag fields?</h3>
-                                                <hr>
-                                                <p>
-                                                    The Flag fields are 'control' bits use to indicate what type of connection states or information about
-                                                    how the packet should be handled by the receiving system.
-                                                    The flag values can be set to '1' meaning active and '0' meaning inactive.
-                                                    <br>
-                                                    <ul>
-                                                        <li>- CWR: The 'congestion window reduced' flag is used by the sending host to indicate that it received a TCP
-                                                        segment with the 'ECN' flag set.</li>
-                                                        <li>- ECN: The 'ECN-Echo' flag is used to indicate that the TCP peer is ECN capable during the
-                                                        TCP 3-way handshake.</li>
-                                                        <li>- URG: Indicates the Urgent pointer field contains significant information.</li>
-                                                        <li>- ACK: The 'acknowledgment' flag is used to indicate that the Acknowledgment field contains significant data/ </li>
-                                                        <li>- PSH: The 'push' flag is used by TCP to allow a sending application to specify that the data must be pushed through immediately.</li>
-                                                        <li>- RST: The 'reset' flag indicates if the TCP connection must be reset.</li>
-                                                        <li>- SYN: The 'synchronize' flag is set to signal that the synchronize sequence numbers should occur. </li>
-                                                        <li>- FIN: If the 'finish' flag is set, this causes the TCP connection to terminate.</li>
-                                                    </ul>
-                                                </p>
-                                                <br>
-                                                <p>Packet's Flags:  <strong>{{ value | safe }}</strong></p>
-                                                <br>
-
-
-                                        {% elif key == 'Window Size' %}
-                                                <br><h3>What is the Window field?</h3>
-                                                <hr>
-                                                <p>
-                                                    The Window field indicates how many octets () of data can be received by the TCP buffer.
-                                                    It is used to provide flow control for the packet.
-                                                </p>
-                                                <br>
-                                                <p>Packet's Window:  <strong>{{ value | safe }}</strong></p>
-                                                <br>
-
-                                        {% elif key == 'Checksum' %}
-                                                <br><h3>What is the Checksum field?</h3>
-                                                <hr>
-                                                <p>
-                                                    The Checksum is used as an error-detection mechanism. The machine that sends the packet
-                                                runs a mathematical algorithm on the datagram. The destination machine then runs the same
-                                                algorithm on the datagram and if the values match then the datagram wasn't damaged on its journey.
-                                                </p>
-                                                <br>
-                                                <p>Packet's Checksum:  <strong>{{ value | safe }}</strong></p>
-                                                <br>
+                                    {% elif key == 'Flags' %}
+                                        <br><h3>What are the Flag fields?</h3>
+                                        <hr>
+                                        <p>
+                                            The Flag fields are 'control' bits use to indicate what type of connection
+                                            states or information about
+                                            how the packet should be handled by the receiving system.
+                                            The flag values can be set to '1' meaning active and '0' meaning inactive.
+                                            <br><br>
+                                        <ul>
+                                            <li>- CWR: The 'congestion window reduced' flag is used by the sending host
+                                                to indicate that it received a TCP
+                                                segment with the 'ECN' flag set.
+                                            </li>
+                                            <li>- ECN: The 'ECN-Echo' flag is used to indicate that the TCP peer is ECN
+                                                capable during the
+                                                TCP 3-way handshake.
+                                            </li>
+                                            <li>- URG: Indicates the Urgent pointer field contains significant
+                                                information.
+                                            </li>
+                                            <li>- ACK: The 'acknowledgment' flag is used to indicate that the
+                                                Acknowledgment field contains significant data/
+                                            </li>
+                                            <li>- PSH: The 'push' flag is used by TCP to allow a sending application to
+                                                specify that the data must be pushed through immediately.
+                                            </li>
+                                            <li>- RST: The 'reset' flag indicates if the TCP connection must be reset.
+                                            </li>
+                                            <li>- SYN: The 'synchronize' flag is set to signal that the synchronize
+                                                sequence numbers should occur.
+                                            </li>
+                                            <li>- FIN: If the 'finish' flag is set, this causes the TCP connection to
+                                                terminate.
+                                            </li>
+                                        </ul>
+                                        </p>
+                                        <br>
+                                        <p>Packet's Flags: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
 
-                                        {% elif key == 'Urgent Pointer' %}
-                                                <br><h3>What is the Urgent Pointer field?</h3>
-                                                <hr>
-                                                <p>
-                                                    The Urgent Pointer specifies the offset of urgent data in the message, relative to the
-			                                        Sequence number in the header. This field is only valid if URG Flag is set.
-                                                </p>
-                                                <br>
-                                                <p>Packet's Urgent Pointer:  <strong>{{ value | safe }}</strong></p>
-                                                <br>
 
-                                        {% else %}
-                                            <p>{{ key | safe }}:  <strong>{{ value | safe }}</strong></p>
-                                            <br>
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
-                                <br>
+                                    {% elif key == 'Data Offset' %}
+                                        <br><h3>What is the Data Offset field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Data Offset is used to indicate the offset from the start
+                                            of the TCP segment to the actual data.
+                                            It is also known as the Header Length and shows the total length of the TCP Header in the packet.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Data Offset: <strong>{{ value | safe }}</strong></p>
+                                        <br>
+
+
+                                    {% elif key == 'Window Size' %}
+                                        <br><h3>What is the Window Size field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Window field indicates how many octets () of data can be received by the
+                                            TCP buffer.
+                                            It is used to provide flow control for the packet.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Window Size: <strong>{{ value | safe }}</strong></p>
+                                        <br>
+
+                                    {% elif key == 'Checksum' %}
+                                        <br><h3>What is the Checksum field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Checksum is used as an error-detection mechanism. The machine that sends
+                                            the packet
+                                            runs a mathematical algorithm on the datagram. The destination machine then
+                                            runs the same
+                                            algorithm on the datagram and if the values match then the datagram wasn't
+                                            damaged on its journey.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Checksum: <strong>{{ value | safe }}</strong></p>
+                                        <br>
+
+
+                                    {% elif key == 'Urgent Pointer' %}
+                                        <br><h3>What is the Urgent Pointer field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Urgent Pointer specifies the offset of urgent data in the message,
+                                            relative to the
+                                            Sequence number in the header. This field is only valid if URG Flag is set.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Urgent Pointer: <strong>{{ value | safe }}</strong></p>
+                                        <br>
+
+                                    {% else %}
+                                        <p>{{ key | safe }}: <strong>{{ value | safe }}</strong></p>
+                                        <br>
+                                    {% endif %}
+                                </div>
                             {% endfor %}
-                        </div>
-                    {% endif %} <!-- end TCP -->
+                            <br>
+                        {% endfor %}
+                    </div>
+                {% endif %} <!-- end TCP -->
 
-                    {% if udp_info != [] %}
-                        <!--        UDP ACCORDION BUTTON         -->
-                        <button class="accordion">Captured UDP Header Information</button>
-                        <div class="panel">
+                {% if udp_info != [] %}
+                    <!--        UDP ACCORDION BUTTON         -->
+                    <button class="accordion">Captured UDP Header Information</button>
+                    <div class="panel">
                         <br>
                         <h4>UDP Information</h4>
                         <hr>
                         <p>
-                           The User Datagram Protocl (UDP) uses a simple connectionless transmission model. Provides checksum for data integrity, port numbers
-                            for addressing diff function at source + dest of datagram. Communication is achieved by transmitting info in one
-                            direction from source to destination without verifying readiness or state of receiver
+                            The User Datagram Protocl (UDP) uses a simple connectionless transmission model.
+                            It involves minimum amount of communication mechanism. UDP is said to be an unreliable
+                            transport protocol
+                            but it uses IP services which provides best effort delivery mechanism.
+                            In UDP, the receiver does not generate an acknowledgement of packet received and in turn,
+                            the sender does not wait for any acknowledgement of packet sent.
+                            This shortcoming makes this protocol unreliable as well as easier on processing.
+
                         </p>
                         <br>
                         <p>
-                            For further information about what each field found within a UDP Header, select one of the options below.
+                            For further information about what each field found within a UDP Header, select one of the
+                            options below.
                         </p>
                         <br>
-                            {% for dict_item in udp_info %}
-                                    {{ loop.index }}
-                                    {% for key, value in dict_item.items() %}
-                                        <button class="inner-accordion">{{ key | safe }}</button>
-                                        <div class="inner-panel">
-                                        {% if key == 'Source Port' %}
-                                            <br><h3>What is the Source Port field?</h3>
-                                            <hr>
-                                            <p>
-                                                The Source Port identifies the senders port when meaningful, assumed to be reply port as well if needed.
-                                                If the port is not in used, then it is set to '0'.
-                                            </p>
-                                            <br>
-                                            <p>Packet's Source Port:  <strong>{{ value | safe }}</strong></p>
-                                            <br>
+                        {% for dict_item in udp_info %}
+                            {{ loop.index }}
+                            {% for key, value in dict_item.items() %}
+                                <button class="inner-accordion">{{ key | safe }}</button>
+                                <div class="inner-panel">
+                                    {% if key == 'Source Port' %}
+                                        <br><h3>What is the Source Port field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Source Port identifies the senders port when meaningful, assumed to be
+                                            reply port as well if needed.
+                                            If the port is not in used, then it is set to '0'.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Source Port: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Dest. Port' %}
-                                            <br><h3>What is the Destination Port field?</h3>
-                                            <hr>
-                                            <p>
-                                                The Destination Port identifies the receivers port of the packet and is a required field.
-                                            </p>
-                                            <br>
-                                            <p>Packet's Destination Port:  <strong>{{ value | safe }}</strong></p>
-                                            <br>
+                                    {% elif key == 'Dest. Port' %}
+                                        <br><h3>What is the Destination Port field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Destination Port identifies the receivers port of the packet and is a
+                                            required field.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Destination Port: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Length' %}
-                                            <br><h3>What is the Length field?</h3>
-                                            <hr>
-                                            <p>
-                                                The Length field is the total length of the UDP Header and UDP data in bytes.
-                                            </p>
-                                            <br>
-                                            <p>Packet's Length:  <strong>{{ value | safe }}</strong></p>
-                                            <br>
+                                    {% elif key == 'Length' %}
+                                        <br><h3>What is the Length field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Length field is the total length of the UDP Header and UDP data in
+                                            bytes.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Length: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
-                                        {% elif key == 'Checksum' %}
-                                            <br><h3>What is the Checksum field?</h3>
-                                            <hr>
-                                            <p>
-                                                The Checksum is used as an error-detection mechanism. The machine that sends the packet
-                                                runs a mathematical algorithm on the datagram. The destination machine then runs the same
-                                                algorithm on the datagram and if the values match then the datagram wasn't damaged on its journey.
-                                            </p>
-                                            <br>
-                                            <p>Packet's Checksum:  <strong>{{ value | safe }}</strong></p>
-                                            <br>
+                                    {% elif key == 'Checksum' %}
+                                        <br><h3>What is the Checksum field?</h3>
+                                        <hr>
+                                        <p>
+                                            The Checksum is used as an error-detection mechanism. The machine that sends
+                                            the packet
+                                            runs a mathematical algorithm on the datagram. The destination machine then
+                                            runs the same
+                                            algorithm on the datagram and if the values match then the datagram wasn't
+                                            damaged on its journey.
+                                        </p>
+                                        <br>
+                                        <p>Packet's Checksum: <strong>{{ value | safe }}</strong></p>
+                                        <br>
 
 
-                                        {% else %}
-                                            <p> data error</p>
-                                        {% endif %}
-                                        </div>
-                                    {% endfor %}
-                                    <br>
-                                {% endfor %}
-                        </div><!-- inner panel -->
-                    {% endif %}
-                </div><!-- panel-->
-            </div><!-- col-lg-6 -->
+                                    {% else %}
+                                        <p> data error</p>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <br>
+                        {% endfor %}
+                    </div><!-- inner panel -->
+                {% endif %}
+
+                {% if http_info == [] %}
+                    <!--        HTTP ACCORDION BUTTON         -->
+                    <button class="accordion">Captured HTTP Information</button>
+                    <div class="panel">
+                        <br>
+                        <h4>HTTP Information</h4>
+                        <hr>
+                        <p>
+
+                        </p>
+                        <br>
+                        <p>
+                            For further information about what each HTTP found, select one of the options below.
+                        </p>
+                        <br>
+                        {% for dict_item in http_info %}
+                            {{ loop.index }}
+                            {% for key, value in dict_item.items() %}
+                                <button class="inner-accordion">{{ key | safe }}</button>
+                                <div class="inner-panel">
+                                    {% if key == 'Request Version' %}
+                                        <br><h3>What is the Request Version?</h3>
+                                        <hr>
+                                        <p>
+
+                                        </p>
+                                        <br>
+                                        <p>Packet's Request Version: <strong>{{ value | safe }}</strong></p>
+                                        <br>
+
+                                    {% elif key == 'Request Method' %}
+                                        <br><h3>What is Request Method?</h3>
+                                        <hr>
+                                        <p>
+
+                                        </p>
+                                        <br>
+                                        <p>Packet's Request Method: <strong>{{ value | safe }}</strong></p>
+                                        <br>
+
+                                    {% elif key == 'Request Number' %}
+                                        <br><h3>What is the Request Number?</h3>
+                                        <hr>
+                                        <p>
+
+                                        </p>
+                                        <br>
+                                        <p>Packet's Request Number: <strong>{{ value | safe }}</strong></p>
+                                        <br>
+
+                                    {% else %}
+                                        <p> data error</p>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <br>
+                        {% endfor %}
+                    </div><!-- inner panel -->
+                {% endif %} <!-- end http_info -->
+            </div><!-- col 12-->
         </div><!-- row -->
-        <br>
     </div><!-- container -->
+    <br>
 </main> <!-- cd-main-content -->
 {% include 'footer.html' %}
 
@@ -686,83 +846,60 @@
 
 <script>
     var acc = document.getElementsByClassName("accordion");
-var i;
+    var i;
 
-for (i = 0; i < acc.length; i++) {
-    acc[i].onclick = function(){
-        /* Toggle between adding and removing the "active" class,
-        to highlight the button that controls the panel */
-        this.classList.toggle("active");
+    for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function () {
+            /* Toggle between adding and removing the "active" class,
+             to highlight the button that controls the panel */
+            this.classList.toggle("active");
 
-        /* Toggle between hiding and showing the active panel */
-        var panel = this.nextElementSibling;
-        if (panel.style.display === "block") {
-            panel.style.display = "none";
-        } else {
-            panel.style.display = "block";
+            /* Toggle between hiding and showing the active panel */
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
         }
     }
-}
 </script>
 
 <script>
     var acc = document.getElementsByClassName("inner-accordion");
-var i;
+    var i;
 
-for (i = 0; i < acc.length; i++) {
-    acc[i].onclick = function(){
-        /* Toggle between adding and removing the "active" class,
-        to highlight the button that controls the panel */
-        this.classList.toggle("active");
+    for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function () {
+            /* Toggle between adding and removing the "active" class,
+             to highlight the button that controls the panel */
+            this.classList.toggle("active");
 
-        /* Toggle between hiding and showing the active panel */
-        var panel = this.nextElementSibling;
-        if (panel.style.display === "block") {
-            panel.style.display = "none";
-        } else {
-            panel.style.display = "block";
+            /* Toggle between hiding and showing the active panel */
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
         }
     }
-}
 </script>
 
-
+<script type="text/javascript" src="{{ url_for('static', filename='js/FileSaver.js') }}"></script>
 <script>
-
-    function download() {
+    function download(base) {
         alert("BS");
-        var jsString = $('pandas_web_base');
-
         $.ajax({
             url: '/analysishub/',
-            data:jsString,
+            data:base,
             success: function (data) {
-                var FileSaver = require('file-saver');
-                var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
-                FileSaver.saveAs(blob, data)
+                alert('Success');
+                alert(base);
 
+                var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+                saveAs(blob, "test.csv");
             }
         })
     }
-
-
 </script>
-
-<!--
-<script>
-$(document).ready(function () {
-        $.ajax({
-            url: '/interfaces',
-            type: 'POST',
-            data: 'pandas_web',
-            success: function (response) {
-            alert('Packet Analysis beginning');
-            console.log(pandas_web);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    });
-</script>
--->
