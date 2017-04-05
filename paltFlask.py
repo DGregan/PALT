@@ -1,11 +1,12 @@
 import pandas as pd
 import pyshark
 import time
+import datetime
 from flask import Flask, render_template, redirect, request, url_for, make_response
 from Handler import DeviceHandler, CaptureHandler
 
 app = Flask(__name__)
-# app.config.from_object('config.TestConfig')
+app.config.from_object('config.TestConfig')
 
 
 @app.route('/')
@@ -43,54 +44,58 @@ def analysishub():
     eth_info, ip_info, table, tcp_info, udp_info = ch.packet_dissector(capture)
     time.sleep(5)
     pandas_web_base = pd.DataFrame(table,
-                                   columns=['Time', 'Source IP', 'Dest. IP', 'Protocol', 'Source MAC Address',
-                                            'Destination MAC Address',
-                                            'Source Port', 'Dest. Port'])
+                                   columns=['Time', 'Source_IP', 'Dest_IP', 'Protocol', 'Source_MAC_Address',
+                                            'Destination_MAC_Address',
+                                            'Source_Port',
+                                            'Dest_Port'])
     pandas_web = pandas_web_base.to_html(classes=['table table-bordered table-hover table-striped'], header=True,
                                          index=True)
-    # pandas_web_base.to_csv()
-    download_csv(pandas_web_base)
-    # pandas_web_base.to_json()
-    # pandas_web_base.to_excel()
-
+    filename = "Summary Table " + datetime.datetime.today().strftime('%Y-%m-%d')
+    pandas_csv = "#" + pandas_web_base.to_csv()
+    #pandas_csv = '"""' + pandas_csv + '"""'
     return render_template("analysishub.html", pandas_web=pandas_web, ip_info=ip_info, eth_info=eth_info,
-                           tcp_info=tcp_info, udp_info=udp_info, pandas_web_base=pandas_web_base, dev=dev)
+                           tcp_info=tcp_info, udp_info=udp_info, pandas_csv=pandas_csv, dev=dev)
 
-
+'''
 @app.route('/analysishub/')
-def download_csv(pandas_web_base):
-    response = make_response(pandas_web_base.to_csv())
-    response.headers["Content-Disposition"] = "attachment; filename=test.csv"
+def download_csv():
+    response = make_response()
+    response.headers["Content-Disposition"] = "attachment; filename={}".format("Summary Table " + datetime.datetime.today().strftime('%Y-%m-%d'))
     response.headers["Content-Type"] = "text/csv"
     return response
-
+'''
 
 @app.route('/resources')
-def help():
+def resources():
     return render_template("resources.html")
 
 
 @app.errorhandler(400)
 def page_bad_request(error):
     resp = make_response(render_template('page_bad_request.html'), 400)
-    resp.headers['X-Something'] = 'A value'
     # print resp
     return resp
 
 
 @app.errorhandler(404)
 def page_not_found(error):
-    # TODO - Utilise on all functions or remove,
     resp = make_response(render_template('page_not_found.html'), 404)
-    resp.headers['X-Something'] = 'A value'
-    print(resp)  # <Response 1361 bytes [404 NOT FOUND]>
+    #print(resp)
     return resp
+
+
+@app.errorhandler(500)
+def page_server_error(error):
+    resp = make_response(render_template('server_error.html'), 500)
+    #print(resp)
+    return resp
+
 
 
 with app.test_request_context():
     print(url_for('index'))
     print(url_for('interfaces', next="/"))
-    print(url_for('help'))
+    print(url_for('resources'))
     print(url_for('analysishub'))
 
 if __name__ == '__main__':

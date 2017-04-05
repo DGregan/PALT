@@ -47,8 +47,9 @@ class DeviceHandler:
             decoded = proc.decode('ascii')  # Decoded Example: 1. {DEVICE\123} ('LAN') 2. {DEVICE\124} ('WiFi')
             interfaces = decoded.splitlines()  # Splits Interfaces into separate lines
             if len(interfaces) >=1:
-                for interface in interfaces:
-                    print(interface)
+               # for interface in interfaces:
+               #     print(interface)
+                pass
             else:
                 interfaces = "No Interfaces Found"
             return interfaces
@@ -223,25 +224,25 @@ class CaptureHandler:
         try:
             if ip_version == 4:  # Check if IPv4 is recognised
                 if packet.transport_layer == 'TCP':  # Check if TCP transport protocol used
-                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
                     # Strip Header Information for Summary Table
                     table_dict = {
-                        'Time': time_stamp, 'Source IP': packet.ip.src.upper(), 'Dest. IP': packet.ip.dst.upper(),
+                        'Time': time_stamp, 'Source_IP': packet.ip.src.upper(), 'Dest_IP': packet.ip.dst.upper(),
                         'Protocol': packet.transport_layer,
-                        'Source MAC Address': packet.eth.src.upper(), 'Destination MAC Address': packet.eth.dst.upper(),
-                        'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
+                        'Source_MAC_Address': packet.eth.src.upper(), 'Destination_MAC_Address': packet.eth.dst.upper(),
+                        'Source_Port': packet.tcp.srcport, 'Dest_Port': packet.tcp.dstport
                     }
                     return table_dict
                 elif packet.transport_layer == 'UDP':  # Check if UDP transport protocol used
-                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
                     if packet.udp.srcport is None or packet.udp.srcport == 0:
                         packet.udp.srcport = 'N/A'
                     # Strip Header Information for Summary Table
                     table_dict = {
-                        'Time': time_stamp, 'Source IP': packet.ip.src.upper(), 'Dest. IP': packet.ip.dst.upper(),
+                        'Time': time_stamp, 'Source_IP': packet.ip.src.upper(), 'Dest_IP': packet.ip.dst.upper(),
                         'Protocol': packet.transport_layer,
-                        'Source MAC Address': packet.eth.src.upper(), 'Destination MAC Address': packet.eth.dst.upper(),
-                        'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
+                        'Source_MAC_Address': packet.eth.src.upper(), 'Destination_MAC_Address': packet.eth.dst.upper(),
+                        'Source_Port': packet.udp.srcport, 'Dest_Port': packet.udp.dstport
                     }
                     return table_dict
                 else:
@@ -249,24 +250,24 @@ class CaptureHandler:
 
             elif ip_version == 6:
                 if packet.transport_layer == 'TCP':
-                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
                     # Strip Header Information for Summary Table
                     table_dict = {
-                        'Time': time_stamp, 'Source IP': packet.ipv6.src.upper(), 'Dest. IP': packet.ipv6.dst.upper(),
+                        'Time': time_stamp, 'Source_IP': packet.ipv6.src.upper(), 'Dest_IP': packet.ipv6.dst.upper(),
                         'Protocol': packet.transport_layer,
-                        'Source MAC Address': packet.eth.src.upper(), 'Destination MAC Address': packet.eth.dst.upper(),
-                        'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport
+                        'Source_MAC_Address': packet.eth.src.upper(), 'Destination_MAC_Address': packet.eth.dst.upper(),
+                        'Source_Port': packet.tcp.srcport, 'Dest_Port': packet.tcp.dstport
                     }
                     return table_dict
                 # Check if UDP transport protocol used
                 elif packet.transport_layer == 'UDP':
-                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    time_stamp = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
                     # Strip Header Information for Summary Table
                     table_dict = {
-                        'Time': time_stamp, 'Source IP': packet.ipv6.src.upper(), 'Dest. IP': packet.ipv6.dst.upper(),
+                        'Time': time_stamp, 'Source_IP': packet.ipv6.src.upper(), 'Dest_IP': packet.ipv6.dst.upper(),
                         'Protocol': packet.transport_layer,
-                        'Source MAC Address': packet.eth.src.upper(), 'Destination MAC Address': packet.eth.dst.upper(),
-                        'Source Port': packet.udp.srcport, 'Dest. Port': packet.udp.dstport
+                        'Source_MAC_Address': packet.eth.src.upper(), 'Destination_MAC_Address': packet.eth.dst.upper(),
+                        'Source_Port': packet.udp.srcport, 'Dest_Port': packet.udp.dstport
                     }
                     return table_dict
                 else:
@@ -320,7 +321,7 @@ class CaptureHandler:
                    # 'Traffic Class DSCP': packet.ipv6.tclass_dscp,
                    # 'Traffic Class ECN': packet.ipv6.tclass_ecn,
                     'Flow Label': packet.ipv6.flow,
-                    'Payload Length': packet.ipv6.plen,
+                    'Payload Length': packet.ipv6.plen + " bytes",
                     'Next Header': packet.ipv6.nxt,
                     'Hop Limit': packet.ipv6.hlim,
                     'Source Address': packet.ipv6.src.upper(),
@@ -353,13 +354,13 @@ class CaptureHandler:
         '''
         try:
             tcp_info = {'Source Port': packet.tcp.srcport, 'Dest. Port': packet.tcp.dstport, 'Sequence Number': packet.tcp.seq,
-                        'Acknowledgement': packet.tcp.ack, 'Data Offset': 'N/A', 'Reserve': 'N/A',
+                        'Acknowledgment Number': packet.tcp.ack,  'Reserve': 'N/A',
                         'Flags': {'CWR': packet.tcp.flags_cwr, 'ECN': packet.tcp.flags_ecn, 'URG': packet.tcp.flags_urg,
                                   'ACK': packet.tcp.flags_ack, 'PSH': packet.tcp.flags_push, 'RST': packet.tcp.flags_reset,
                                   'SYN': packet.tcp.flags_syn, 'FIN': packet.tcp.flags_fin
                                   },
-                        'Window Size': packet.tcp.window_size, 'Window Size Value': packet.tcp.window_size_value,
-                        'Header Length': packet.tcp.hdr_len + " bytes", 'Protocol': packet.tcp.layer_name.upper(),
+                        'Window Size': packet.tcp.window_size,
+                        'Data Offset': packet.tcp.hdr_len + " bytes",
                         'Checksum': packet.tcp.checksum,
                         'Urgent Pointer': packet.tcp.urgent_pointer
                         #, 'Segment Data': packet.tcp.segment_data
@@ -390,7 +391,6 @@ class CaptureHandler:
             udp_info = {
                 'Source Port': packet.udp.srcport,
                 'Dest. Port': packet.udp.dstport,
-                'Protocol': packet.udp.layer_name.upper(),
                 'Length': packet.udp.length + " bytes",
                 'Checksum': packet.udp.checksum,
             }
